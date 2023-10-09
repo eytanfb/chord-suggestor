@@ -1,0 +1,31 @@
+<div class="flex flex-col">
+  <div class="w-full grid grid-rows-1 grid-cols-12 gap-y-2" data-controller="home">
+    <% @keys.each do |key| %>
+      <% if key.include? "#" %>
+        <div class="bg-black text-white w-16 h-16 border border-gray-400 p-4 shadow-md rounded-md hover:cursor-pointer hover:shadow-sm" data-action="click->home#selectKey">
+          <%= key %>
+        </div>
+      <% else %>
+        <div class="w-16 h-16 border border-gray-400 p-4 shadow-md rounded-md hover:cursor-pointer hover:shadow-sm" data-action="click->home#selectKey">
+          <%= key %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-8 border mt-16" data-controller="home">
+    <% @modes_and_chords.each do |row| %>
+      <div class="p-2 bg-gray-100 border border-gray-200">
+        <%= row[:mode] %>
+      </div>
+
+      <% row[:chords].each_with_index do |chord, index| %>
+        <div class="chord-box p-2 bg-white border border-gray-200 font-serif text-center hover:cursor-pointer" data-chord="<%= chord_representation(chord, index) %>">
+          <div class="w-2/3 text-center" data-action="mouseover->home#displayChordNotes"><%= chord_representation(chord, index) %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="h-32 p-2 bg-white border border-gray-200 font-serif text-center mt-10" id="chord-notes"></div>
+</div>
