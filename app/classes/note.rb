@@ -17,21 +17,36 @@ class Note
     'A#' => 10,
     'Bb' => 10,
     'B' => 11
-  }
+  }.freeze
 
-  attr_reader :name, :semitones
+  attr_reader :name
 
   def initialize(name)
     @name = name
-    @semitones = SEMITONES[name]
+  end
+
+  def semitones
+    semitone = SEMITONES[@name]
+
+    return semitone unless semitone.nil?
+
+    # for every # in the note, add 1 semitone
+    # for every b in the note, subtract 1 semitone
+    semitone = 0
+    @name.each_char do |char|
+      semitone += 1 if char == '#'
+      semitone -= 1 if char == 'b'
+    end
+
+    semitone
   end
 
   def up(interval)
-    Note.new(Note::SEMITONES.key((@semitones + interval) % 12))
+    Note.new(Note::SEMITONES.key((semitones + interval) % 12))
   end
 
   def down(interval)
-    Note.new(Note::SEMITONES.key((@semitones - interval) % 12))
+    Note.new(Note::SEMITONES.key((semitones - interval) % 12))
   end
 
   def flat?

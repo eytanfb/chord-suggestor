@@ -13,5 +13,13 @@
 */
 
 .selected {
-  @apply bg-green-700 text-white font-bold;
+  @apply !bg-green-700 text-white font-bold;
+}
+
+.black-key {
+  @apply bg-black text-white w-16 h-16 border border-gray-400 p-4 shadow-md rounded-md hover:cursor-pointer hover:shadow-sm;
+}
+
+.white-key {
+  @apply w-16 h-16 border border-gray-400 p-4 shadow-md rounded-md hover:cursor-pointer hover:shadow-sm
 }

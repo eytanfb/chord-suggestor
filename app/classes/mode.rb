@@ -7,7 +7,7 @@ class Mode
     chord_shapes[index]
   end
 
-  def chords_for_key(key)
-    raise NotImplementedError
+  def name
+    self.class.to_s
   end
 end

@@ -9,8 +9,6 @@ class Scale
     @key = key
     @mode = mode
 
-    current_note = key
-
     mode.intervals.each do |interval|
       current_note = get_current_note_for_interval(key, interval)
       @notes << current_note
@@ -21,6 +19,10 @@ class Scale
     @notes.map.with_index do |note, index|
       Chord.new(note, @key, @mode.chord_shape_at(index))
     end
+  end
+
+  def name
+    "#{@key.name} #{@mode.name}"
   end
 
   private

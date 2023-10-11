@@ -8,6 +8,28 @@ describe 'Chord' do
     end
   end
 
+  describe '#notes' do
+    it 'returns the correct notes for a major chord' do
+      chord = Chord.new(Note.new('C'), Note.new('C'), ChordShape.new('Major'))
+      expect(chord.notes).to eq [Note.new('C'), Note.new('E'), Note.new('G')]
+    end
+
+    it 'returns the correct notes for a minor chord' do
+      chord = Chord.new(Note.new('A'), Note.new('A'), ChordShape.new('Minor'))
+      expect(chord.notes).to eq [Note.new('A'), Note.new('C'), Note.new('E')]
+    end
+
+    it 'returns the correct notes for a diminished chord' do
+      chord = Chord.new(Note.new('B'), Note.new('B'), ChordShape.new('Diminished'))
+      expect(chord.notes).to eq [Note.new('B'), Note.new('D'), Note.new('F')]
+    end
+
+    it 'returns the correct notes for an augmented chord' do
+      chord = Chord.new(Note.new('C'), Note.new('C'), ChordShape.new('Augmented'))
+      expect(chord.notes).to eq [Note.new('C'), Note.new('E'), Note.new('G#')]
+    end
+  end
+
   describe '#name' do
     it 'returns the correct name for a major chord' do
       chord = Chord.new(Note.new('C'), Note.new('C'), ChordShape.new('Major'))
