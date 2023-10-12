@@ -1,16 +1,10 @@
 <div class="flex flex-col">
   <div class="w-full grid grid-rows-1 grid-cols-12 gap-y-2" data-controller="home">
     <% @keys.each do |key| %>
-      <%= link_to root_path(key: key) do %>
-        <% if key.include? "#" %>
-          <div class="black-key <%= "selected" if @key == key %>" data-action="click->home#selectKey">
+      <%= link_to root_path(key: key)  do %>
+        <div class="key <%= key.include?('#') ? 'black-key' : 'white-key' %> <%= "selected" if @key == key %>" data-action="click->home#selectKey" data-note="<%= key %>">
             <%= key %>
           </div>
-        <% else %>
-          <div class="white-key <%= "selected" if @key == key %>" data-action="click->home#selectKey">
-            <%= key %>
-          </div>
-        <% end %>
       <% end %>
     <% end %>
   </div>

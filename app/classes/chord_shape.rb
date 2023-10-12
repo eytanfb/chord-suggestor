@@ -15,10 +15,10 @@ class ChordShape
   QUALITY_REPRESENTATIONS = {
     'Major' => '',
     'Minor' => 'm',
-    'Diminished' => 'dim',
-    'Augmented' => 'aug',
-    'Minor Diminished' => 'mdim',
-    'Sharp Minor Diminished' => 'mdim',
+    'Diminished' => '°',
+    'Augmented' => '+',
+    'Minor Diminished' => 'm°',
+    'Sharp Minor Diminished' => 'm°',
     'Flat Major' => '',
     'Flat Minor' => 'm'
   }.freeze
