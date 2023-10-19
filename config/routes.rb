@@ -6,4 +6,10 @@ Rails.application.routes.draw do
 
   # define home controller
   root 'home#index'
+
+  resources :progression, only: [] do
+    collection do
+      post :update
+    end
+  end
 end

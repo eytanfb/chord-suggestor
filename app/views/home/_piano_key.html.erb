@@ -1,0 +1,13 @@
+<%
+  selected = root == key ? 'selected' : ''
+  text_color = root != key ? 'text-gray-400' : 'text-syntakt-green-fg'
+%>
+<%= link_to root_path(key: key) do %>
+  <div class="h-32">
+    <div class="<%= selected %> piano-key <%= key.include?('#') ? 'piano-black-key' : 'piano-white-key' %>" data-note="<%= key %>">
+      <div class="flex items-center justify-center text-center">
+        <span class="<%= text_color %>"><%= key %></span>
+      </div>
+    </div>
+  </div>
+<% end %>

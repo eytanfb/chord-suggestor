@@ -1,0 +1,14 @@
+<%
+  selected = root == key ? 'selected' : ''
+  inner_border = root != key ? 'border-gray-400' : 'border-syntakt-green-fg'
+  text_color = root != key ? 'text-gray-400' : 'text-syntakt-green-fg'
+%>
+<%= link_to root_path(key: key) do %>
+  <div class="grid grid-col-1 grid-row-2 h-32">
+    <div class="<%= selected %> key <%= key.include?('#') ? 'black-key' : 'white-key' %>" data-note="<%= key %>">
+      <div class="flex w-12 h-12 m-auto border-2 <%= inner_border %> items-center justify-center">
+        <span class="<%= text_color %>"><%= key %></span>
+      </div>
+    </div>
+  </div>
+<% end %>

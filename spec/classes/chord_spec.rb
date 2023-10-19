@@ -53,4 +53,19 @@ describe 'Chord' do
       expect(chord.quality).to eq 'Minor'
     end
   end
+
+  describe '#display_joined_notes' do
+    it 'returns notes joined by a -' do
+      chord = Chord.new(Note.new('C'), Note.new('C'), ChordShape.new('Major'))
+      expect(chord.display_joined_notes).to eq 'C - E - G'
+    end
+
+    describe 'when there are no notes' do
+      it 'returns an empty string' do
+        chord = Chord.new(Note.new('C'), Note.new('C'), ChordShape.new('Major'))
+        chord.instance_variable_set(:@notes, [])
+        expect(chord.display_joined_notes).to eq ''
+      end
+    end
+  end
 end

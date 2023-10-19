@@ -206,7 +206,7 @@ describe 'Scale' do
         expect(scale.chords.map(&:name)).to eq(
           %w[
             Am
-            Bdim
+            B°
             C
             Dm
             Em
@@ -228,7 +228,7 @@ describe 'Scale' do
             'C',
             'D',
             'Em',
-            'F#dim',
+            'F#°',
             'G'
           ]
         )

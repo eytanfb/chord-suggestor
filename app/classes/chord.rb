@@ -23,4 +23,8 @@ class Chord
   def ==(other)
     @notes == other.notes
   end
+
+  def display_joined_notes
+    @notes.map(&:name).join(' - ')
+  end
 end

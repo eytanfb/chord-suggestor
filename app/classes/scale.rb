@@ -29,7 +29,12 @@ class Scale
 
   def get_current_note_for_interval(key, interval)
     current_note = key.up(interval)
-    current_note = key.flat? ? Note.flat_version(current_note) : Note.sharp_version(current_note)
+
+    if key.flat?
+      current_note = Note.flat_version(current_note)
+    elsif key.sharp?
+      current_note = Note.sharp_version(current_note)
+    end
 
     return current_note if @notes.empty?
 
