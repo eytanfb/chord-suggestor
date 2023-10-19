@@ -1,4 +1,6 @@
 class Mode
+  ALL = %w[Ionian Dorian Phrygian Lydian Mixolydian Aeolian Locrian].freeze
+
   def chord_shapes
     @chord_shapes ||= self.class::CHORD_SHAPES.map { |shape| ChordShape.new(shape) }
   end

@@ -1,8 +1,8 @@
 <% progression.chords.each do |chord_mode| %>
   <% chord = chord_mode['chord'] %>
-  <% mode = chord_mode['mode'] %>
+  <% mode = chord_mode['mode'].downcase %>
 
-  <div class="progression-chord h-full w-32 text-modes-<%= mode.downcase %> hover:cursor-pointer hover:border-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode.downcase %>" data-action="mouseover->home#handleProgressionChordHover" data-controller="home">
-    <%= chord %>
+  <div class="progression-chord flex items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover" data-controller="home">
+    <span><%= chord %></span>
   </div>
 <% end %>

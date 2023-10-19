@@ -1,9 +1,8 @@
 class Chord
   attr_reader :notes
 
-  def initialize(root, key, chord_shape)
+  def initialize(root, chord_shape)
     @root = root
-    @key = key
     @chord_shape = chord_shape
     @notes = []
 
@@ -26,5 +25,9 @@ class Chord
 
   def display_joined_notes
     @notes.map(&:name).join(' - ')
+  end
+
+  def note_samples
+    @notes.map(&:sample_for_note)
   end
 end

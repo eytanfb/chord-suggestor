@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Howl } from 'howler'
 
 export default class extends Controller {
   initialize() {
@@ -45,10 +46,11 @@ export default class extends Controller {
     const chord = event.currentTarget.dataset.chord
     const mode = event.currentTarget.dataset.mode
 
-    console.log(chord, mode)
     this.chords.push({ chord, mode })
 
     event.currentTarget.classList.add(`mode-shadow-${mode}`)
+    event.currentTarget.querySelector('div').classList.remove('text-white')
+    event.currentTarget.querySelector('div').classList.add(`text-modes-${mode}`)
 
     this.displayProgression(chord, mode)
   }
@@ -90,4 +92,16 @@ export default class extends Controller {
       chordElement.classList.remove('animate-[pulse_200ms_ease-in-out_3]')
     }, 800)
   }
+
+  playChord(event) {
+    const samples = event.currentTarget.dataset.samples
+
+    const sound = new Howl({
+      src: samples,
+      onload: function() {
+        sound.play();
+      }
+    });
+  }
+
 }

@@ -10,14 +10,14 @@ class Scale
     @mode = mode
 
     mode.intervals.each do |interval|
-      current_note = get_current_note_for_interval(key, interval)
+      current_note = get_current_note_for_interval(interval)
       @notes << current_note
     end
   end
 
   def chords
     @notes.map.with_index do |note, index|
-      Chord.new(note, @key, @mode.chord_shape_at(index))
+      Chord.new(note, @mode.chord_shape_at(index))
     end
   end
 
@@ -27,12 +27,12 @@ class Scale
 
   private
 
-  def get_current_note_for_interval(key, interval)
-    current_note = key.up(interval)
+  def get_current_note_for_interval(interval)
+    current_note = @key.up(interval)
 
-    if key.flat?
+    if @key.flat?
       current_note = Note.flat_version(current_note)
-    elsif key.sharp?
+    elsif @key.sharp?
       current_note = Note.sharp_version(current_note)
     end
 

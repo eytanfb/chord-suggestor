@@ -23,6 +23,14 @@ class ChordShape
     'Flat Minor' => 'm'
   }.freeze
 
+  QUALITY_REPRESENTATIONS_INVERSE = {
+    '' => 'Major',
+    'm' => 'Minor',
+    '°' => 'Diminished',
+    '+' => 'Augmented',
+    'm°' => 'Minor Diminished'
+  }.freeze
+
   def initialize(quality)
     @quality = quality
   end
