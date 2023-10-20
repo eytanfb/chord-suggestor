@@ -17,19 +17,11 @@
   <% if @key %>
     <div class="grid grid-cols-8 border mt-16">
       <% @chords.each do |mode, chords| %>
-        <div class="p-2 font-bold text-modes-<%= mode.downcase %> border border-gray-200">
-          <%= mode %>
-        </div>
-
-        <% chords.each_with_index do |chord, index| %>
-          <%= render partial: "home/chord", locals: { chord: , mode: } %>
-        <% end %>
+        <%= render partial: "home/mode_chords", locals: { mode:, chords:} %>
       <% end %>
     </div>
 
-    <div id="progression" class="h-32">
-      <div class="flex items-center justify-center w-full mx-auto text-white text-2xl text-center mt-16">
-      </div>
+    <div id="progressionContainer">
     </div>
   <% end %>
 </div>

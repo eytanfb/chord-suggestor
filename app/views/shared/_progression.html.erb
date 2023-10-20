@@ -1,9 +1,13 @@
-<% progression.chords.each do |chord_mode| %>
-  <% chord = chord_mode['chord'] %>
-  <% mode = chord_mode['mode'].downcase %>
+<div id="progression" class="h-32" data-progression="<%= progression.chords.to_json %>">
+  <div class="flex items-center justify-center w-full mx-auto text-white text-2xl text-center mt-16">
+    <% progression.chords.each do |chord_mode| %>
+      <% chord = chord_mode['chord'] %>
+      <% mode = chord_mode['mode'].downcase %>
 
-  <div class="progression-chord relative flex items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover" data-controller="home">
-    <span class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-200 border-<%= mode %> rounded-full text-xs text-black hover:cursor-pointer" data-action="click->home#removeChord" data-controller="home" data-chord="<%= chord %>" data-mode="<%= mode %>">x</span>
-    <span><%= chord %></span>
+      <div class="progression-chord relative flex items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover" data-controller="home">
+        <span class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-200 border-<%= mode %> rounded-full text-xs text-black hover:cursor-pointer" data-action="click->home#removeChord" data-controller="home" data-chord="<%= chord %>" data-mode="<%= mode %>">x</span>
+        <span><%= chord %></span>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

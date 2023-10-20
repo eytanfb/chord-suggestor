@@ -2,16 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Howl } from 'howler'
 
 export default class extends Controller {
-  static values = ["chords", "progression"]
-
-  initialize() {
-    this.chordsValue = []
-    this.progressionValue = []
-  }
-
-  connect() {
-    console.log('connected')
-  }
+  static values = ["progressionValue"]
 
   displayChordNotes(event) {
     const chordNotes = event.currentTarget.dataset.chordNotes
@@ -54,8 +45,6 @@ export default class extends Controller {
     const chord = target.dataset.chord
     const mode = target.dataset.mode
 
-    this.chordsValue.push({ chord, mode })
-
     target.classList.add(`mode-shadow-${mode}`)
     target.querySelector('div').classList.remove('text-white')
     target.querySelector('div').classList.add(`text-modes-${mode}`)
@@ -64,16 +53,16 @@ export default class extends Controller {
   }
 
   displayProgression(chord, mode) {
-    this.progressionElementDiv().innerHTML = ''
-
     this.makeProgressionRequest(chord, mode)
-    this.progression.push({ chord, mode })
   }
 
   makeProgressionRequest(chord, mode) {
-    const progressionParam = encodeURIComponent(JSON.stringify(this.progression))
+    const progression = this.progression()
+    const progressionParam = encodeURIComponent(JSON.stringify(progression))
     const chordParam = encodeURIComponent(chord)
     const modeParam = encodeURIComponent(mode)
+
+    const $this = this;
 
     const url = `/progression?progression=${progressionParam}&&chord=${chordParam}&&mode=${modeParam}`
     fetch(url, { method: 'POST' })
@@ -84,8 +73,8 @@ export default class extends Controller {
   }
 
   progressionElementDiv() {
-    const progressionElement = document.getElementById('progression')
-    return progressionElement.querySelector('div')
+    const progressionElement = document.getElementById('progressionContainer')
+    return progressionElement;
   }
 
   handleProgressionChordHover(event) {
@@ -136,21 +125,25 @@ export default class extends Controller {
       }
     }
 
-    this.progression = this.progression.filter((_, index) => index !== siblingIndex)
+    let progression = this.progression()
+    progression = progression.filter((_, index) => index !== siblingIndex)
+    this.progression(progression)
     targetParent.remove()
 
-    this.makeProgressionRequest()
+    this.makeProgressionRequest('', '')
   }
 
-  playChord(event) {
-    const samples = event.currentTarget.dataset.samples
+  progression(progression) {
+    const element = document.getElementById('progression')
 
-    const sound = new Howl({
-      src: samples,
-      onload: function() {
-        sound.play();
-      }
-    });
+    if (!element) {
+      return []
+    }
+
+    if (progression) {
+      element.dataset.progression = JSON.stringify(progression)
+      return;
+    }
+    return JSON.parse(element.dataset.progression)
   }
-
 }
