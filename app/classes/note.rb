@@ -19,6 +19,8 @@ class Note
     'B' => 11
   }.freeze
 
+  ALL = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].freeze
+
   attr_reader :name
 
   def initialize(name)

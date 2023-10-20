@@ -1,12 +1,13 @@
 <%
-  selected = root == key ? 'selected' : ''
-  text_color = root != key ? 'text-gray-400' : 'text-syntakt-green-fg'
+  key_name = key.name
+  selected = root == key_name ? 'selected' : ''
+  text_color = root != key_name ? 'text-gray-400' : 'text-syntakt-green-fg'
 %>
-<%= link_to root_path(key: key) do %>
+<%= link_to root_path(key: key_name) do %>
   <div class="h-32">
-    <div class="<%= selected %> piano-key <%= key.include?('#') ? 'piano-black-key' : 'piano-white-key' %>" data-note="<%= key %>">
+    <div class="<%= selected %> piano-key <%= key_name.include?('#') ? 'piano-black-key' : 'piano-white-key' %>" data-note="<%= key_name %>">
       <div class="flex items-center justify-center text-center">
-        <span class="<%= text_color %>"><%= key %></span>
+        <span class="<%= text_color %>"><%= key_name %></span>
       </div>
     </div>
   </div>

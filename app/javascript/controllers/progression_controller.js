@@ -8,21 +8,31 @@ export default class extends Controller {
     const playButton = document.getElementById('progression-controls');
     const icon = playButton.firstElementChild;
 
-    icon.classList.add('fa-stop');
-    icon.classList.remove('fa-play');
+    if (chords.length) {
+      icon.classList.add('fa-stop');
+      icon.classList.remove('fa-play');
 
-    chords.forEach((chord, index) => {
-      setTimeout(() => {
-        this.highlightChord(chord, bpm);
+      chords.forEach((chord, index) => {
+        setTimeout(() => {
+          this.highlightChord(chord, bpm);
 
-        if (index === chords.length - 1) {
-          setTimeout(() => {
-            playButton.firstElementChild.classList.add('fa-play');
-            playButton.firstElementChild.classList.remove('fa-stop');
-          }, 60000 / bpm);
-        }
-      }, 60000 / bpm * index);
-    });
+          if (index === chords.length - 1) {
+            setTimeout(() => {
+              playButton.firstElementChild.classList.add('fa-play');
+              playButton.firstElementChild.classList.remove('fa-stop');
+            }, 60000 / bpm);
+          }
+        }, 60000 / bpm * index);
+      });
+    } else {
+      document.getElementById('progression-help').classList.remove('hidden');
+      document.getElementById('progression-help').classList.add('animate-pulse-quick');
+
+      setInterval(() => {
+        document.getElementById('progression-help').classList.add('hidden');
+      document.getElementById('progression-help').classList.remove('animate-pulse-quick');
+      }, 5000);
+    }
   }
 
   updateBpm({ currentTarget: { value } }) {

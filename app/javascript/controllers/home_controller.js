@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import { Howl } from 'howler'
 
 export default class extends Controller {
   static values = ["progressionValue"]
@@ -62,8 +61,6 @@ export default class extends Controller {
     const chordParam = encodeURIComponent(chord)
     const modeParam = encodeURIComponent(mode)
 
-    const $this = this;
-
     const url = `/progression?progression=${progressionParam}&&chord=${chordParam}&&mode=${modeParam}`
     fetch(url, { method: 'POST' })
       .then(response => response.text())
@@ -88,11 +85,11 @@ export default class extends Controller {
 
     const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
 
+    chordElement.classList.add('animate-pulse-quick')
     chordElement.dispatchEvent(new Event('mouseover'))
-    chordElement.classList.add('animate-[pulse_200ms_ease-in-out_3]')
 
     setTimeout(() => {
-      chordElement.classList.remove('animate-[pulse_200ms_ease-in-out_3]')
+      chordElement.classList.remove('animate-pulse-quick')
     }, 800)
   }
 

@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        'pulse-quick': 'pulse 200ms ease-in-out 3',
+      },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
