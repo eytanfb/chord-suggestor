@@ -1,9 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 import { Howl } from "howler"
+import _ from "lodash"
 
 export default class extends Controller {
-  static debounces = ["playChordSamples"]
-  static values = ["progressionValue"]
+  connect() {
+    this.debouncedPlayChordSamples = _.debounce(this.playChordSamples, 500)
+  }
 
   displayChordNotes(event) {
     const chordNotes = event.currentTarget.dataset.chordNotes
@@ -19,7 +21,12 @@ export default class extends Controller {
 
     this.highlightChordNotes(chordNotes, mode)
 
-    this.playChordSamples(chordNotes)
+    const isPlaying = document.getElementById('progression-container').dataset.playing
+    if (isPlaying === 'true') {
+      this.playChordSamples(chordNotes)
+    } else {
+      this.debouncedPlayChordSamples(chordNotes)
+    }
   }
 
   highlightChordNotes(chordNotes, mode) {
@@ -47,7 +54,6 @@ export default class extends Controller {
     const target = event.currentTarget
     const chord = target.dataset.chord
     const mode = target.dataset.mode
-    const chordNotes = event.currentTarget.dataset.chordNotes
 
     target.classList.add(`mode-shadow-${mode}`)
     target.querySelector('div').classList.remove('text-white')
@@ -75,7 +81,7 @@ export default class extends Controller {
   }
 
   progressionElementDiv() {
-    const progressionElement = document.getElementById('progressionContainer')
+    const progressionElement = document.getElementById('progression-container')
     return progressionElement;
   }
 
