@@ -12,3 +12,7 @@ eagerLoadControllersFrom("controllers", application)
 
 import Home from "controllers/home_controller"
 application.register("home", Home)
+
+import Progression from "controllers/progression_controller"
+application.register("progression", Progression)
+

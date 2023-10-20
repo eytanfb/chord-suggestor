@@ -21,6 +21,12 @@
       <% end %>
     </div>
 
+    <div class="flex items-center mt-4">
+      <span class="items-center text-white">BPM</span>
+      <input id="bpm" type="range" class="ml-4 bg-transparent text-gray-400 border border-gray-100" value="120" min="60" max="200" data-controller="progression" data-action="input->progression#updateBpm" />
+      <span id="bpm-label" class="ml-4 items-center text-white">120</span>
+      <span id="progression-controls" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression" data-action="click->progression#playProgression"><i class="fas fa-play"></i></span>
+    </div>
     <div id="progressionContainer">
     </div>
   <% end %>
