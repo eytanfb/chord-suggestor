@@ -208,4 +208,24 @@ describe 'Note' do
       expect(note.successive_to?(Note.new('A#'))).to be false
     end
   end
+
+  describe '#==' do
+    it 'returns true if the notes are the same' do
+      note = Note.new('C')
+      expect(note == Note.new('C')).to be true
+      note = Note.new('C#')
+      expect(note == Note.new('C#')).to be true
+      note = Note.new('Db')
+      expect(note == Note.new('Db')).to be true
+    end
+
+    it 'returns false if the notes are not the same' do
+      note = Note.new('C')
+      expect(note == Note.new('D')).to be false
+      note = Note.new('C#')
+      expect(note == Note.new('D')).to be false
+      note = Note.new('Db')
+      expect(note == Note.new('D')).to be false
+    end
+  end
 end

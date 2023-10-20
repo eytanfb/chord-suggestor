@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
+import { Howl } from "howler"
 
 export default class extends Controller {
+  static debounces = ["playChordSamples"]
   static values = ["progressionValue"]
 
   displayChordNotes(event) {
@@ -16,11 +18,13 @@ export default class extends Controller {
     chordNotesElement.parentElement.classList.add(`mode-shadow-${mode}`)
 
     this.highlightChordNotes(chordNotes, mode)
+
+    this.playChordSamples(chordNotes)
   }
 
   highlightChordNotes(chordNotes, mode) {
     const notes = chordNotes.split(' - ')
-    const keys = document.querySelectorAll('.key,.piano-key')
+    const keys = document.querySelectorAll('.key')
 
     keys.forEach((key) => {
       this.removeClass(key, 'highlighted-note-')
@@ -43,6 +47,7 @@ export default class extends Controller {
     const target = event.currentTarget
     const chord = target.dataset.chord
     const mode = target.dataset.mode
+    const chordNotes = event.currentTarget.dataset.chordNotes
 
     target.classList.add(`mode-shadow-${mode}`)
     target.querySelector('div').classList.remove('text-white')
@@ -142,5 +147,32 @@ export default class extends Controller {
       return;
     }
     return JSON.parse(element.dataset.progression)
+  }
+
+  playChordSamples(chordNotes) {
+    const notes = chordNotes.split(' - ')
+    const keys = document.querySelectorAll('.key')
+    const samples = []
+
+    keys.forEach((key) => {
+      if (notes.includes(key.dataset.note)) {
+        samples.push(key.dataset.sample)
+      }
+    });
+
+    samples.forEach((sample) => {
+      const sound = new Howl({
+        src: [sample],
+        volume: 0.5,
+        onplay: function(id) {
+          console.log('Playing!', id);
+        },
+        onend: function() {
+          console.log('Finished!');
+        }
+      })
+
+      sound.play();
+    })
   }
 }

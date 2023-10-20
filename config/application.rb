@@ -19,5 +19,12 @@ module ChordSuggestor
     # config.time_zone = "Central Time (US & Canada)"
     config.eager_load_paths << Rails.root.join('app/classes')
     config.eager_load_paths << Rails.root.join('app/presenters')
+    config.eager_load_paths << Rails.root.join('app/services')
+
+    # add samples folder in the assets folder
+    config.assets.paths << Rails.root.join('app', 'assets', 'samples')
+
+    # precompile the samples folder
+    config.assets.precompile += %w[*.wav]
   end
 end

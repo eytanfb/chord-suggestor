@@ -78,10 +78,6 @@ class Note
     @name == other.name
   end
 
-  def sample_for_note
-    Rails.root.join('app', 'assets', 'samples', `#{@name}.wav`)
-  end
-
   def self.sharp_version(note)
     return note unless note.name.include?('b')
 
