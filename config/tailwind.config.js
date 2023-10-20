@@ -65,7 +65,7 @@ module.exports = {
           color: `${value}`,
         }
 
-        const borderClassName = `border-${color}`;
+        const borderClassName = `border-modes-${color}`;
         borderUtilities[`.${borderClassName}`] = {
           border: `2px solid ${value}`,
         }
@@ -75,5 +75,23 @@ module.exports = {
       addUtilities(highlightedNoteUtilities);
       addUtilities(borderUtilities);
     }),
-  ]
+  ],
+  safelist: [
+    {
+      pattern: /mode-shadow-.*/,
+      variants: ['hover'],
+    },
+    {
+      pattern: /highlighted-note-.*/,
+    },
+    {
+      pattern: /border-modes-.*/,
+      variants: ['hover'],
+    },
+    {
+      pattern: /text-modes-.*/,
+      variants: ['hover', 'group-hover'],
+    },
+    'animate-pulse-quick',
+  ],
 }

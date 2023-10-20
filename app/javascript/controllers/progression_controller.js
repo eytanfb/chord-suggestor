@@ -43,7 +43,7 @@ export default class extends Controller {
   highlightChord(chord, bpm) {
     chord.dispatchEvent(new Event('mouseover'));
     const mode = chord.dataset.mode;
-    chord.classList.add(`border-${mode}`);
+    chord.classList.add(`border-modes-${mode}`);
 
     const mouseOutInterval = setInterval(() => {
       this.unhighlightChord(chord);
@@ -54,6 +54,6 @@ export default class extends Controller {
   unhighlightChord(chord) {
     chord.dispatchEvent(new Event('mouseleave'));
     const mode = chord.dataset.mode;
-    chord.classList.remove(`border-${mode}`);
+    chord.classList.remove(`border-modes-${mode}`);
   }
 }
