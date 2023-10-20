@@ -27,6 +27,10 @@
       <span id="bpm-label" class="w-8 ml-4 items-center text-white">120</span>
       <span id="progression-controls" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression" data-action="click->progression#playProgression"><i class="fas fa-play"></i></span>
       <span id="progression-help" class="hidden text-white ml-4">I need a chord first</span>
+      <div class="ml-auto">
+        <span class="underline-offset-2 underline text-white hover:cursor-pointer" data-controller="home" data-action="click->home#clearProgression">Clear progression</span>
+        <span class="underline-offset-2 underline text-white hover:cursor-pointer" data-controller="home" data-action="click->home#addSilenceToProgression">Add silence</span>
+      </div>
     </div>
     <div id="progression-container">
     </div>

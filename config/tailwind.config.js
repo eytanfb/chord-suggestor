@@ -29,6 +29,7 @@ module.exports = {
           'aeolian': '#009688',
           'phrygian': '#673AB7',
           'locrian': '#3E67C4',
+          'silence': '#9E9E9E',
         },
       },
     },

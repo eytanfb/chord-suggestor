@@ -15,4 +15,13 @@ describe 'Progression' do
       expect(progression.chords).to eq [{ 'chord' => 'Am', 'mode' => 'Ionian' }, { 'chord' => 'C', 'mode' => 'Ionian' }]
     end
   end
+
+  describe '#add_silence' do
+    it 'adds a silence to the progression' do
+      progression = Progression.new([{ 'chord' => 'Am', 'mode' => 'Ionian' }])
+      progression.add_silence
+      expect(progression.chords).to eq [{ 'chord' => 'Am', 'mode' => 'Ionian' },
+                                        { 'chord' => 'Silence', 'mode' => 'Silence' }]
+    end
+  end
 end

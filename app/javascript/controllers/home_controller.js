@@ -86,7 +86,12 @@ export default class extends Controller {
   }
 
   handleProgressionChordHover(event) {
-    this.displayChordOnTable(event)
+    const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
+
+    if (!isSilence) {
+      this.displayChordOnTable(event)
+    }
+
     this.displayRemoveChordElement(event)
   }
 
@@ -119,10 +124,12 @@ export default class extends Controller {
     const chord = target.dataset.chord
     const mode = target.dataset.mode
 
-    const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
-    chordElement.classList.remove(`mode-shadow-${mode}`)
-    chordElement.querySelector('div').classList.add('text-white')
-    chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
+    if (chord.toLowerCase() !== 'silence') {
+      const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
+      chordElement.classList.remove(`mode-shadow-${mode}`)
+      chordElement.querySelector('div').classList.add('text-white')
+      chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
+    }
 
     const progressionChildren = targetParent.parentElement.children
 
@@ -170,15 +177,32 @@ export default class extends Controller {
       const sound = new Howl({
         src: [sample],
         volume: 0.5,
-        onplay: function(id) {
-          console.log('Playing!', id);
-        },
-        onend: function() {
-          console.log('Finished!');
-        }
       })
 
       sound.play();
     })
+  }
+
+  addSilenceToProgression() {
+    this.makeProgressionRequest('Silence', 'Silence')
+  }
+
+  clearProgression() {
+    const progression = this.progression()
+    const progressionElement = document.getElementById('progression-container')
+    progressionElement.innerHTML = ''
+
+    progression.forEach((chord) => {
+      if (chord.chord.toLowerCase() !== 'silence') {
+        const chordElement = document.querySelector(`[data-chord="${chord.chord}"][data-mode="${chord.mode}"]`)
+        chordElement.classList.remove(`mode-shadow-${chord.mode}`)
+        chordElement.querySelector('div').classList.add('text-white')
+        chordElement.querySelector('div').classList.remove(`text-modes-${chord.mode}`)
+      }
+    })
+
+    this.progression([])
+
+    document.getElementById('progression-container').dataset.playing = false;
   }
 }

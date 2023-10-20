@@ -10,4 +10,8 @@ class Progression
   def add_chord(chord, mode)
     @progression << { 'chord' => chord, 'mode' => mode }
   end
+
+  def add_silence
+    @progression << { 'chord' => 'Silence', 'mode' => 'Silence' }
+  end
 end
