@@ -16,8 +16,10 @@ export default class extends Controller {
         this.highlightChord(chord, bpm);
 
         if (index === chords.length - 1) {
-          icon.classList.add('fa-play');
-          icon.classList.remove('fa-stop');
+          setTimeout(() => {
+            playButton.firstElementChild.classList.add('fa-play');
+            playButton.firstElementChild.classList.remove('fa-stop');
+          }, 60000 / bpm);
         }
       }, 60000 / bpm * index);
     });
