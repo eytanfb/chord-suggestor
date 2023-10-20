@@ -9,7 +9,7 @@ class ProgressionController < ApplicationController
     chord = params[:chord]
     mode = params[:mode]
 
-    progression.add_chord(chord, mode)
+    progression.add_chord(chord, mode) if chord && mode
 
     render partial: 'shared/progression', locals: { progression: }
   end

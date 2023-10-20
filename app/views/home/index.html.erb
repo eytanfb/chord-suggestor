@@ -1,10 +1,10 @@
-<div class="flex flex-col">
-  <div id="synth-view" class="w-full grid grid-rows-1 grid-cols-12 gap-y-2" data-controller="home">
+<div class="flex flex-col" data-controller="home">
+  <div id="synth-view" class="w-full grid grid-rows-1 grid-cols-12 gap-y-2">
     <% @keys.each do |key| %>
       <%= render partial: "home/syntakt_key", locals: { root: @key, key: key } %>
     <% end %>
   </div>
-  <div id="piano-view" class="hidden w-full grid-rows-1 grid-cols-12 gap-y-2" data-controller="home">
+  <div id="piano-view" class="hidden w-full grid-rows-1 grid-cols-12 gap-y-2">
     <% @keys.each do |key| %>
       <%= render partial: "home/piano_key", locals: { root: @key, key: key } %>
     <% end %>
@@ -15,7 +15,7 @@
   </div>
 
   <% if @key %>
-    <div class="grid grid-cols-8 border mt-16" data-controller="home">
+    <div class="grid grid-cols-8 border mt-16">
       <% @chords.each do |mode, chords| %>
         <div class="p-2 font-bold text-modes-<%= mode.downcase %> border border-gray-200">
           <%= mode %>
@@ -27,7 +27,7 @@
       <% end %>
     </div>
 
-    <div id="progression" class="h-32" data-controller="home">
+    <div id="progression" class="h-32">
       <div class="flex items-center justify-center w-full mx-auto text-white text-2xl text-center mt-16">
       </div>
     </div>
