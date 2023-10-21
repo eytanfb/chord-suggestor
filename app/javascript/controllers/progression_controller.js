@@ -5,31 +5,53 @@ export default class extends Controller {
   playProgression() {
     const bpm = document.getElementById('bpm').value;
     const chords = Array.from(document.querySelectorAll('.progression-chord'));
-    const playButton = document.getElementById('progression-controls');
-    const icon = playButton.firstElementChild;
+    const playButton = document.getElementById('progression-controls-play');
+    const stopButton = document.getElementById('progression-controls-stop');
+    const isLoop = document.getElementById('progression-controls-loop').dataset.loop === 'true';
 
     document.getElementById('progression-container').dataset.playing = true;
     document.getElementById('progression-container').dataset.hovering = false;
 
     if (chords.length) {
-      icon.classList.add('fa-stop');
-      icon.classList.remove('fa-play');
+      playButton.classList.add('hidden');
+      stopButton.classList.remove('hidden');
 
-      chords.forEach((chord, index) => {
-        setTimeout(() => {
-          // set a data on the progressionContainer
-          // to skip debouncing
-          this.highlightChord(chord, bpm);
+      if (!isLoop) {
+        chords.forEach((chord, index) => {
+          setTimeout(() => {
+            this.highlightChord(chord, bpm);
 
-          if (index === chords.length - 1) {
-            setTimeout(() => {
-              playButton.firstElementChild.classList.add('fa-play');
-              playButton.firstElementChild.classList.remove('fa-stop');
-              document.getElementById('progression-container').dataset.playing = false;
-            }, 60000 / bpm);
-          }
-        }, 60000 / bpm * index);
-      });
+            if (index === chords.length - 1) {
+              setTimeout(() => {
+                playButton.classList.remove('hidden');
+                stopButton.classList.add('hidden');
+                console.log('stopping in isLoop')
+                document.getElementById('progression-container').dataset.playing = false;
+              }, 60000 / bpm);
+            }
+          }, 60000 / bpm * index);
+        });
+      } else {
+        const internalLoops = []
+        const loopInterval = setInterval(() => {
+          chords.forEach((chord, index) => {
+            const loop = setTimeout(() => {
+              this.highlightChord(chord, bpm);
+            }, 60000 / bpm * index);
+
+            internalLoops.push(loop);
+          });
+        }, 60000 / bpm * chords.length);
+
+        stopButton.addEventListener('click', () => {
+          clearInterval(loopInterval);
+          internalLoops.forEach((loop) => {
+            clearTimeout(loop);
+          });
+          this.stopProgression();
+          stopButton.removeEventListener('click', () => {});
+        })
+      }
     } else {
       document.getElementById('progression-help').classList.remove('hidden');
       document.getElementById('progression-help').classList.add('animate-pulse-quick');
@@ -41,9 +63,32 @@ export default class extends Controller {
     }
   }
 
+  stopProgression() {
+    const playButton = document.getElementById('progression-controls-play')
+    const stopButton = document.getElementById('progression-controls-stop')
+
+    stopButton.classList.add('hidden')
+    playButton.classList.remove('hidden')
+
+    document.getElementById('progression-container').dataset.playing = false
+  }
+
   updateBpm({ currentTarget: { value } }) {
     const bpmLabel = document.getElementById('bpm-label');
     bpmLabel.innerText = `${value}`;
+  }
+
+  updateLoop(event) {
+    const loop = event.currentTarget.dataset.loop;
+    const icon = event.currentTarget.firstElementChild;
+
+    if (loop === 'true') {
+      event.currentTarget.dataset.loop = false;
+      icon.classList.remove('fa-spin');
+    } else {
+      event.currentTarget.dataset.loop = true;
+      icon.classList.add('fa-spin');
+    }
   }
 
   highlightChord(chord, bpm) {

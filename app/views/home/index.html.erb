@@ -1,3 +1,4 @@
+<div class="hidden text-green"></div>
 <div class="flex flex-col" data-controller="home">
   <div id="synth-view" class="w-full grid grid-rows-1 grid-cols-12 gap-y-2">
     <% @keys.each do |key| %>
@@ -25,7 +26,9 @@
       <span class="items-center text-white">BPM</span>
       <input id="bpm" type="range" class="ml-4 bg-transparent text-gray-400 border border-gray-100" value="120" min="60" max="200" data-controller="progression" data-action="input->progression#updateBpm" />
       <span id="bpm-label" class="w-8 ml-4 items-center text-white">120</span>
-      <span id="progression-controls" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression" data-action="click->progression#playProgression"><i class="fas fa-play"></i></span>
+      <span id="progression-controls-loop" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-loop="false" data-controller="progression" data-action="click->progression#updateLoop"><i class="fas fa-rotate-right"></i></span>
+      <span id="progression-controls-play" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression" data-action="click->progression#playProgression"><i class="fas fa-play"></i></span>
+      <span id="progression-controls-stop" class="hidden ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression"><i class="fas fa-stop"></i></span>
       <span id="progression-help" class="hidden text-white ml-4">I need a chord first</span>
       <div class="ml-auto">
         <span class="underline-offset-2 underline text-white hover:cursor-pointer" data-controller="home" data-action="click->home#clearProgression">Clear progression</span>
