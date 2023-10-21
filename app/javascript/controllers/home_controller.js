@@ -141,13 +141,6 @@ export default class extends Controller {
     const chord = target.dataset.chord
     const mode = target.dataset.mode
 
-    if (chord.toLowerCase() !== 'silence') {
-      const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
-      chordElement.classList.remove(`mode-shadow-${mode}`)
-      chordElement.querySelector('div').classList.add('text-white')
-      chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
-    }
-
     const progressionChildren = targetParent.parentElement.children
 
     let siblingIndex = 0
@@ -161,6 +154,17 @@ export default class extends Controller {
     progression = progression.filter((_, index) => index !== siblingIndex)
     this.progression(progression)
     targetParent.remove()
+
+    if (chord.toLowerCase() !== 'silence') {
+      const chordInProgression = progression.some((chordInArray) => chordInArray.chord === chord && chordInArray.mode === mode)
+
+      if (!chordInProgression) {
+        const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
+        chordElement.classList.remove(`mode-shadow-${mode}`)
+        chordElement.querySelector('div').classList.add('text-white')
+        chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
+      }
+    }
 
     this.makeProgressionRequest('', '')
   }
