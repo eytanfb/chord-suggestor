@@ -197,7 +197,7 @@ export default class extends Controller {
     samples.forEach((sample) => {
       const sound = new Howl({
         src: [sample],
-        volume: 0.5,
+        volume: 1,
       })
 
       sound.play();

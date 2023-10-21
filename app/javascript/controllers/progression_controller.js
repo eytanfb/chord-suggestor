@@ -11,6 +11,7 @@ export default class extends Controller {
 
     document.getElementById('progression-container').dataset.playing = true;
     document.getElementById('progression-container').dataset.hovering = false;
+    document.getElementById('bpm').disabled = true;
 
     if (chords.length) {
       playButton.classList.add('hidden');
@@ -66,6 +67,8 @@ export default class extends Controller {
   stopProgression() {
     const playButton = document.getElementById('progression-controls-play')
     const stopButton = document.getElementById('progression-controls-stop')
+
+    document.getElementById('bpm').disabled = false
 
     stopButton.classList.add('hidden')
     playButton.classList.remove('hidden')
