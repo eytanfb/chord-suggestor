@@ -22,10 +22,16 @@ export default class extends Controller {
     this.highlightChordNotes(chordNotes, mode)
 
     const isPlaying = document.getElementById('progression-container').dataset.playing
-    if (isPlaying === 'true') {
-      this.playChordSamples(chordNotes)
+    const isHovering = document.getElementById('progression-container').dataset.hovering
+
+    if (isHovering === 'false' || isPlaying === 'true') {
+      if (isPlaying === 'true') {
+        this.playChordSamples(chordNotes)
+      } else {
+        this.debouncedPlayChordSamples(chordNotes)
+      }
     } else {
-      this.debouncedPlayChordSamples(chordNotes)
+      document.getElementById('progression-container').dataset.hovering = false;
     }
   }
 
@@ -87,12 +93,23 @@ export default class extends Controller {
 
   handleProgressionChordHover(event) {
     const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
+    document.getElementById('progression-container').dataset.hovering = true;
 
     if (!isSilence) {
       this.displayChordOnTable(event)
     }
 
     this.displayRemoveChordElement(event)
+  }
+
+  handleProgressionChordClick(event) {
+    const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
+
+    if (!isSilence) {
+      document.getElementById('progression-container').dataset.playing = true;
+      this.displayChordOnTable(event)
+      document.getElementById('progression-container').dataset.playing = false;
+    }
   }
 
   displayChordOnTable(event) {

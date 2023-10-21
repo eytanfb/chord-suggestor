@@ -9,6 +9,7 @@ export default class extends Controller {
     const icon = playButton.firstElementChild;
 
     document.getElementById('progression-container').dataset.playing = true;
+    document.getElementById('progression-container').dataset.hovering = false;
 
     if (chords.length) {
       icon.classList.add('fa-stop');
@@ -35,7 +36,7 @@ export default class extends Controller {
 
       setInterval(() => {
         document.getElementById('progression-help').classList.add('hidden');
-      document.getElementById('progression-help').classList.remove('animate-pulse-quick');
+        document.getElementById('progression-help').classList.remove('animate-pulse-quick');
       }, 5000);
     }
   }
