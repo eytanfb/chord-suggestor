@@ -7,17 +7,14 @@ export default class extends Controller {
     this.debouncedPlayChordSamples = _.debounce(this.playChordSamples, 500)
   }
 
-  displayChordNotes(event) {
-    const chordNotes = event.currentTarget.dataset.chordNotes
-    const mode = event.currentTarget.dataset.mode
-
+  displayChordNotes({ currentTarget: { dataset: { chordNotes, mode }} }) {
     const chordNotesElement = document.getElementById('chord-notes')
     chordNotesElement.innerHTML = chordNotes
 
     const chordNotesElementParent = chordNotesElement.parentElement
     this.removeClass(chordNotesElementParent, 'mode-shadow-')
 
-    chordNotesElement.parentElement.classList.add(`mode-shadow-${mode}`)
+    chordNotesElementParent.classList.add(`mode-shadow-${mode}`)
 
     this.highlightChordNotes(chordNotes, mode)
 
@@ -56,14 +53,10 @@ export default class extends Controller {
     })
   }
 
-  selectChord(event) {
-    const target = event.currentTarget
-    const chord = target.dataset.chord
-    const mode = target.dataset.mode
-
-    target.classList.add(`mode-shadow-${mode}`)
-    target.querySelector('div').classList.remove('text-white')
-    target.querySelector('div').classList.add(`text-modes-${mode}`)
+  selectChord({ currentTarget, currentTarget: { dataset: { chord, mode }} }) {
+    currentTarget.classList.add(`mode-shadow-${mode}`)
+    currentTarget.querySelector('div').classList.remove('text-white')
+    currentTarget.querySelector('div').classList.add(`text-modes-${mode}`)
 
     this.displayProgression(chord, mode)
   }
@@ -102,8 +95,8 @@ export default class extends Controller {
     this.displayRemoveChordElement(event)
   }
 
-  handleProgressionChordClick(event) {
-    const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
+  handleProgressionChordClick({ currentTarget: { dataset: { chord } }}) {
+    const isSilence = chord.toLowerCase() === 'silence'
 
     if (!isSilence) {
       document.getElementById('progression-container').dataset.playing = true;
@@ -112,10 +105,7 @@ export default class extends Controller {
     }
   }
 
-  displayChordOnTable(event) {
-    const chord = event.currentTarget.dataset.chord
-    const mode = event.currentTarget.dataset.mode
-
+  displayChordOnTable({ currentTarget: { dataset: { chord, mode }} }) {
     const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
 
     chordElement.classList.add('animate-pulse-quick')
@@ -143,16 +133,7 @@ export default class extends Controller {
 
     const progressionChildren = targetParent.parentElement.children
 
-    let siblingIndex = 0
-    for (let i = 0; i < progressionChildren.length; i++) {
-      if (progressionChildren[i] === targetParent) {
-        siblingIndex = i
-      }
-    }
-
-    let progression = this.progression()
-    progression = progression.filter((_, index) => index !== siblingIndex)
-    this.progression(progression)
+    const progression = this.removeFromProgression(progressionChildren, targetParent)
     targetParent.remove()
 
     if (chord.toLowerCase() !== 'silence') {
@@ -225,5 +206,19 @@ export default class extends Controller {
     this.progression([])
 
     document.getElementById('progression-container').dataset.playing = false;
+  }
+
+  removeFromProgression(progressionChildren, targetParent) {
+    let siblingIndex = 0
+    for (let i = 0; i < progressionChildren.length; i++) {
+      if (progressionChildren[i] === targetParent) {
+        siblingIndex = i
+      }
+    }
+
+    let progression = this.progression()
+    progression = progression.filter((_, index) => index !== siblingIndex)
+    this.progression(progression)
+    return this.progression()
   }
 }
