@@ -1,6 +1,7 @@
 class ChordSuggestionHandler
-  def initialize(key)
+  def initialize(key, is_seventh: false)
     @key = Note.new(key)
+    @is_seventh = is_seventh
   end
 
   def suggest_chords
@@ -13,13 +14,13 @@ class ChordSuggestionHandler
 
   def modes
     @modes ||= [
-      Ionian.new,
-      Dorian.new,
-      Phrygian.new,
-      Lydian.new,
-      Mixolydian.new,
-      Aeolian.new,
-      Locrian.new
+      Ionian.new(is_seventh: @is_seventh),
+      Dorian.new(is_seventh: @is_seventh),
+      Phrygian.new(is_seventh: @is_seventh),
+      Lydian.new(is_seventh: @is_seventh),
+      Mixolydian.new(is_seventh: @is_seventh),
+      Aeolian.new(is_seventh: @is_seventh),
+      Locrian.new(is_seventh: @is_seventh)
     ]
   end
 end

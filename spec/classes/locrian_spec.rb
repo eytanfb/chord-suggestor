@@ -8,6 +8,15 @@ describe 'Locrian' do
          'Flat Major', 'Flat Minor']
       )
     end
+
+    describe 'when is_seventh is true' do
+      it 'returns an array of chord shapes' do
+        expect(Locrian.new(is_seventh: true).chord_shapes.map(&:quality)).to eq(
+          ['Half Diminished 7', 'Flat Major 7', 'Minor 7', 'Minor 7', 'Flat Major 7',
+           'Dominant 7', 'Minor 7']
+        )
+      end
+    end
   end
 
   describe '#intervals' do

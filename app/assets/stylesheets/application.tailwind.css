@@ -13,7 +13,7 @@
 */
 
 html, body {
-  @apply bg-[#0D0E0F] font-sans;
+  @apply bg-[#0D0E0F] font-sans text-white;
 }
 
 .selected {

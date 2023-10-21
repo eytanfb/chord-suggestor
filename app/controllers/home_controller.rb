@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:update]
   before_action :set_keys
 
   def index
@@ -6,9 +7,16 @@ class HomeController < ApplicationController
 
     return if @key.nil?
 
-    chords = ChordSuggestionHandler.new(@key).suggest_chords
+    @is_seventh = Rails.cache.fetch('is_seventh') { false }
+    chords = ChordSuggestionHandler.new(@key, is_seventh: @is_seventh).suggest_chords
 
     @chords = ChordsPresenter.new(chords).present
+  end
+
+  def update
+    is_seventh = params[:is_seventh] == 'true'
+
+    Rails.cache.write('is_seventh', is_seventh)
   end
 
   private

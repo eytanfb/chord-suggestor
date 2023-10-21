@@ -7,6 +7,12 @@ Rails.application.routes.draw do
   # define home controller
   root 'home#index'
 
+  resources :home, only: %i[index] do
+    collection do
+      post :update
+    end
+  end
+
   resources :progression, only: [] do
     collection do
       post :update

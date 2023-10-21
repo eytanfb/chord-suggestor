@@ -221,4 +221,14 @@ export default class extends Controller {
     this.progression(progression)
     return this.progression()
   }
+
+  toggle7ths(event) {
+    // make a call to the backend to toggle 7ths
+    // to the home_controller#update action
+    const target = event.currentTarget
+    const isChecking = target.checked
+
+    const url = '/home?is_seventh=' + isChecking
+    fetch(url, { method: 'POST' })
+  }
 }
