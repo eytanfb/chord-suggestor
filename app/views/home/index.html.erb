@@ -41,6 +41,9 @@
       </div>
     </div>
     <div id="progression-container">
+      <% if @progression %>
+        <%= render partial: "shared/progression", locals: { progression: @progression } %>
+      <% end %>
     </div>
   <% end %>
 </div>

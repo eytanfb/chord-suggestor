@@ -11,6 +11,7 @@ class ProgressionController < ApplicationController
     mode = params[:mode]
 
     progression.add_chord(chord, mode) unless chord.blank? && mode.blank?
+    Rails.cache.write('progression', progression.to_json)
 
     render partial: 'shared/progression', locals: { progression: }
   end
