@@ -1,6 +1,6 @@
 <div id="progression" class="h-32 mt-12" data-progression="<%= progression.chords.to_json %>">
-  <div class="flex items-center w-full mx-auto text-white text-2xl text-center">
-    <div class="flex-1 flex justify-center">
+  <div class="flex items-center w-full mx-auto text-2xl text-center text-white">
+    <div class="flex justify-center flex-1">
       <% progression.chords.each do |chord_mode| %>
         <% chord = chord_mode['chord'] %>
         <% mode = chord_mode['mode'].downcase %>
