@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe 'ChordSuggestionHandler' do
-  describe '#suggest_chords' do
+describe 'ChordsForKeyHandler' do
+  describe '#chords' do
     it 'returns a list of chords' do
-      suggestor = ChordSuggestionHandler.new('C')
-      chord_suggestions = suggestor.suggest_chords
+      suggestor = ChordsForKeyHandler.new('C')
+      chord_suggestions = suggestor.chords
 
       chord_suggestions.each_pair do |mode, chords|
         expect(Mode::ALL).to include(mode)

@@ -1,10 +1,10 @@
-class ChordSuggestionHandler
+class ChordsForKeyHandler
   def initialize(key, is_seventh: false)
     @key = Note.new(key)
     @is_seventh = is_seventh
   end
 
-  def suggest_chords
+  def chords
     modes.each_with_object({}) do |mode, suggestions|
       suggestions[mode.name] = Scale.new(@key, mode).chords
     end

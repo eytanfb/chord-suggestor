@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     return if @key.nil?
 
     @is_seventh = Rails.cache.fetch('is_seventh') { false }
-    chords = ChordSuggestionHandler.new(@key, is_seventh: @is_seventh).suggest_chords
+    chords = ChordsForKeyHandler.new(@key, is_seventh: @is_seventh).chords
 
     @chords = ChordsPresenter.new(chords).present
     # progression = JSON.parse(Rails.cache.fetch('progression') { [] })['progression']
