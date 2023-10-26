@@ -18,6 +18,8 @@
   <div id="optional-features">
     <input id="show-7ths" type="checkbox" <%= "checked" if @is_seventh %> class="ml-4 text-gray-400 bg-transparent border border-gray-100" data-controller="home" data-action="change->home#toggle7ths" />
     <label for="show-7ths" class="ml-2">Show 7ths</label>
+    <input id="mute-preview" type="checkbox" class="ml-4 text-gray-400 bg-transparent border border-gray-100" />
+    <label for="mute-preview" class="ml-2">Mute preview table</label>
   </div>
 
   <% if @key %>

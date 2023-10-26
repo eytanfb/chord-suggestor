@@ -11,8 +11,8 @@ class HomeController < ApplicationController
     chords = ChordSuggestionHandler.new(@key, is_seventh: @is_seventh).suggest_chords
 
     @chords = ChordsPresenter.new(chords).present
-    progression = JSON.parse(Rails.cache.fetch('progression') { [] })['progression']
-    @progression = Progression.new(progression)
+    # progression = JSON.parse(Rails.cache.fetch('progression') { [] })['progression']
+    # @progression = Progression.new
   end
 
   def update

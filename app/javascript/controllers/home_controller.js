@@ -20,12 +20,15 @@ export default class extends Controller {
 
     const isPlaying = document.getElementById('progression-container').dataset.playing
     const isHovering = document.getElementById('progression-container').dataset.hovering
+    const isNotMuted = !document.getElementById('mute-preview').checked
 
     if (isHovering === 'false' || isPlaying === 'true') {
-      if (isPlaying === 'true') {
-        this.playChordSamples(chordNotes)
-      } else {
-        this.debouncedPlayChordSamples(chordNotes)
+      if (isNotMuted) {
+        if (isPlaying === 'true') {
+          this.playChordSamples(chordNotes)
+        } else {
+          this.debouncedPlayChordSamples(chordNotes)
+        }
       }
     } else {
       document.getElementById('progression-container').dataset.hovering = false;
@@ -223,8 +226,6 @@ export default class extends Controller {
   }
 
   toggle7ths(event) {
-    // make a call to the backend to toggle 7ths
-    // to the home_controller#update action
     const target = event.currentTarget
     const isChecking = target.checked
 
