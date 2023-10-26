@@ -198,12 +198,12 @@ describe 'Scale' do
     end
   end
 
-  describe '#chords' do
+  describe '#chord_groups' do
     describe 'given an aeolian scale' do
-      it 'returns an array of chords' do
+      it 'returns an array of chord_groups' do
         scale = Scale.new(Note.new('A'), Aeolian.new)
 
-        expect(scale.chords.map(&:name)).to eq(
+        expect(scale.chord_groups.map(&:primary_chord).map(&:name)).to eq(
           %w[
             Am
             B°
@@ -218,10 +218,10 @@ describe 'Scale' do
     end
 
     describe 'given a dorian scale' do
-      it 'returns an array of chords' do
+      it 'returns an array of chord_groups' do
         scale = Scale.new(Note.new('A'), Dorian.new)
 
-        expect(scale.chords.map(&:name)).to eq(
+        expect(scale.chord_groups.map(&:primary_chord).map(&:name)).to eq(
           [
             'Am',
             'Bm',

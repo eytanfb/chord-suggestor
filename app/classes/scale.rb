@@ -15,9 +15,10 @@ class Scale
     end
   end
 
-  def chords
+  def chord_groups
     @notes.map.with_index do |note, index|
-      Chord.new(note, @mode.chord_shape_at(index))
+      chord = Chord.new(note, @mode.chord_shape_at(index))
+      ChordGroup.new(chord)
     end
   end
 

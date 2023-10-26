@@ -1,20 +1,20 @@
 require 'rails_helper'
 
 describe 'ChordsForKeyHandler' do
-  describe '#chords' do
+  describe '#chord_groups' do
     it 'returns a list of chords' do
       suggestor = ChordsForKeyHandler.new('C')
-      chord_suggestions = suggestor.chords
+      chord_suggestions = suggestor.chord_groups
 
-      chord_suggestions.each_pair do |mode, chords|
+      chord_suggestions.each_pair do |mode, chord_groups|
         expect(Mode::ALL).to include(mode)
 
         mode = Object.const_get(mode.capitalize).new
 
         scale = Scale.new(Note.new('C'), mode)
 
-        chords.each do |chord|
-          expect(scale.chords).to include(chord)
+        chord_groups.each do |chord_group|
+          expect(scale.chord_groups.map(&:primary_chord)).to include(chord_group.primary_chord)
         end
       end
     end

@@ -4,9 +4,9 @@ class ChordsForKeyHandler
     @is_seventh = is_seventh
   end
 
-  def chords
+  def chord_groups
     modes.each_with_object({}) do |mode, suggestions|
-      suggestions[mode.name] = Scale.new(@key, mode).chords
+      suggestions[mode.name] = Scale.new(@key, mode).chord_groups
     end
   end
 

@@ -3,5 +3,5 @@
 </div>
 
 <% chords.each_with_index do |chord, index| %>
-  <%= render partial: "home/chord", locals: { chord: , mode: } %>
+  <%= render partial: "home/chord", locals: { chord: chord.primary_chord, mode: } %>
 <% end %>
