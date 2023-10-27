@@ -4,13 +4,20 @@
       <% progression.chord_groups.each do |chord_group_mode| %>
         <% chord = chord_group_mode[:chord_group].primary_chord.name %>
         <% mode = chord_group_mode[:mode].downcase %>
+        <% alternative_chords = chord_group_mode[:chord_group].alternative_chords %>
 
-        <div class="progression-chord relative flex first:ml-0 ml-4 items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-modes-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick" data-controller="home">
+        <div class="progression-chord relative flex flex-col first:ml-0 ml-4 items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-modes-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick" data-controller="home">
           <span class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-700 border-modes-<%= mode %> rounded-full text-xs text-white hover:cursor-pointer active:transform active:scale-[0.90]" data-action="click->home#removeChord" data-controller="home" data-chord="<%= chord %>" data-mode="<%= mode %>">x</span>
           <% if chord == 'Silence' %>
             <span><i class="fas fa-volume-off"></i></span>
           <% else %>
             <span><%= chord %></span>
+          <% end %>
+          <% if alternative_chords.any? %>
+            <% alternative_chords.each_with_index do |alternative_chords, index| %>
+              <% chord = alternative_chords.name %>
+              <span class="hidden alternative-chord flex absolute left-0 items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer border-modes-<%= mode %>" style="top:<%= (index + 1) * 4 %>rem" data-chord="<%= chord %>" data-mode="<%= mode %>"><%= chord %></span>
+            <% end %>
           <% end %>
         </div>
       <% end %>

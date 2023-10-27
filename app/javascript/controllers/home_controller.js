@@ -96,6 +96,7 @@ export default class extends Controller {
     }
 
     this.displayRemoveChordElement(event)
+    this.displayAlternativeChords(event)
   }
 
   handleProgressionChordClick({ currentTarget: { dataset: { chord } }}) {
@@ -127,6 +128,23 @@ export default class extends Controller {
       removeChordElement.classList.add('hidden')
     })
   }
+
+  displayAlternativeChords(event) {
+    const target = event.currentTarget
+
+    const alternativeChords = target.querySelectorAll('.alternative-chord')
+
+    alternativeChords.forEach((alternativeChord) => {
+      alternativeChord.classList.remove('hidden')
+    });
+
+    target.addEventListener('mouseleave', () => {
+      alternativeChords.forEach((alternativeChord) => {
+        alternativeChord.classList.add('hidden')
+      });
+    })
+  }
+
 
   removeChord(event) {
     const target = event.currentTarget
