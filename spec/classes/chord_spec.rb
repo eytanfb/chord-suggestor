@@ -68,4 +68,21 @@ describe 'Chord' do
       end
     end
   end
+
+  describe '.from_json' do
+    it 'creates a chord from a json string' do
+      json = {
+        'root' => { 'name' => 'C' },
+        'chord_shape' => { 'quality' => 'Major' },
+        'notes' => [
+          { 'name' => 'C' }, { 'name' => 'E' }, { 'name' => 'G' }
+        ],
+        'name' => 'C'
+      }
+
+      chord = Chord.from_json(json)
+
+      expect(chord).to eq(Chord.new(Note.new('C'), ChordShape.new('Major')))
+    end
+  end
 end

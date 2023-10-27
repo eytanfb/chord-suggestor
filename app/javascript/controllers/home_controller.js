@@ -56,12 +56,12 @@ export default class extends Controller {
     })
   }
 
-  selectChord({ currentTarget, currentTarget: { dataset: { chord, mode }} }) {
+  selectChord({ currentTarget, currentTarget: { dataset: { chordGroup, mode }} }) {
     currentTarget.classList.add(`mode-shadow-${mode}`)
     currentTarget.querySelector('div').classList.remove('text-white')
     currentTarget.querySelector('div').classList.add(`text-modes-${mode}`)
 
-    this.displayProgression(chord, mode)
+    this.displayProgression(chordGroup, mode)
   }
 
   displayProgression(chord, mode) {
@@ -74,7 +74,7 @@ export default class extends Controller {
     const chordParam = encodeURIComponent(chord)
     const modeParam = encodeURIComponent(mode)
 
-    const url = `/progression?progression=${progressionParam}&&chord=${chordParam}&&mode=${modeParam}`
+    const url = `/progression?progression=${progressionParam}&&chord_group=${chordParam}&&mode=${modeParam}`
     fetch(url, { method: 'POST' })
       .then(response => response.text())
       .then(html => {

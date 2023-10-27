@@ -18,7 +18,8 @@ class Scale
   def chord_groups
     @notes.map.with_index do |note, index|
       chord = Chord.new(note, @mode.chord_shape_at(index))
-      ChordGroup.new(chord)
+      chord_group = ChordGroup.new(chord)
+      chord_group = add_alternatives(chord_group, index)
     end
   end
 
@@ -59,5 +60,37 @@ class Scale
     else
       note
     end
+  end
+
+  def add_alternatives(chord_group, index)
+    if index == 0
+      chord_group
+    else
+      alternative_chords_for(index).each do |alternative_chord|
+        chord_group.add_alternative(alternative_chord)
+      end
+      chord_group
+    end
+  end
+
+  def alternative_chords_for(index)
+    return [] if [0, 4, 6].include?(index)
+
+    alternative_chords = []
+    alternative_chords << five_of_two(index)
+    alternative_chords << two_diminished_of_two(index)
+    alternative_chords
+  end
+
+  def five_of_two(index)
+    note = @notes[index]
+    fifth = note.up(7)
+    Chord.new(fifth, ChordShape.new('Dominant 7'))
+  end
+
+  def two_diminished_of_two(index)
+    note = @notes[index]
+    second = note.down(1)
+    Chord.new(second, ChordShape.new('Diminished 7'))
   end
 end

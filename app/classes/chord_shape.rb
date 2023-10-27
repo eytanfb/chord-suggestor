@@ -71,4 +71,9 @@ class ChordShape
   def quality_representation
     QUALITY_REPRESENTATIONS[@quality]
   end
+
+  def self.from_json(json)
+    quality = json['quality']
+    ChordShape.new(quality)
+  end
 end

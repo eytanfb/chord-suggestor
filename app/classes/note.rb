@@ -105,4 +105,8 @@ class Note
 
     Note.new(flat_version)
   end
+
+  def self.from_json(json)
+    Note.new(json['name'])
+  end
 end

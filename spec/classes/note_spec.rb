@@ -228,4 +228,12 @@ describe 'Note' do
       expect(note == Note.new('D')).to be false
     end
   end
+
+  describe '.from_json' do
+    it 'creates a note from a json string' do
+      json = { 'name' => 'C' }
+      note = Note.from_json(json)
+      expect(note.name).to eq('C')
+    end
+  end
 end

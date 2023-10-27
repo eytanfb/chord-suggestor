@@ -64,5 +64,56 @@ describe 'ChordGroup' do
 
       expect(chord_group).not_to eq(other_chord_group)
     end
+
+    describe 'when chord is silent' do
+      it 'returns true when the primary chord and alternative chords are equal' do
+        chord = SilentChord.new
+        chord_group = ChordGroup.new(chord)
+        chord_group.add_alternative(SilentChord.new)
+
+        other_chord = SilentChord.new
+        other_chord_group = ChordGroup.new(other_chord)
+        other_chord_group.add_alternative(SilentChord.new)
+
+        expect(chord_group).to eq(other_chord_group)
+      end
+
+      it 'returns false when the primary chord is different' do
+        chord = SilentChord.new
+        chord_group = ChordGroup.new(chord)
+        chord_group.add_alternative(SilentChord.new)
+
+        other_chord = Chord.new(Note.new('D'), ChordShape.new('Major'))
+        other_chord_group = ChordGroup.new(other_chord)
+        other_chord_group.add_alternative(SilentChord.new)
+
+        expect(chord_group).not_to eq(other_chord_group)
+      end
+
+      it 'returns false when the alternative chords are different' do
+        chord = SilentChord.new
+        chord_group = ChordGroup.new(chord)
+        chord_group.add_alternative(SilentChord.new)
+
+        other_chord = SilentChord.new
+        other_chord_group = ChordGroup.new(other_chord)
+        other_chord_group.add_alternative(Chord.new(Note.new('D'), ChordShape.new('Major')))
+
+        expect(chord_group).not_to eq(other_chord_group)
+      end
+    end
+  end
+
+  describe '.from_json' do
+    it 'creates a chord group from a json string' do
+      json = {
+        'primary_chord' => { 'root' => { 'name' => 'C' }, 'chord_shape' => { 'quality' => 'Major 7' },
+                             'notes' => [{ 'name' => 'C' }, { 'name' => 'E' }, { 'name' => 'G' }, { 'name' => 'B' }], 'name' => 'Cmaj7' }, 'alternative_chords' => []
+      }
+
+      other_chord_group = ChordGroup.from_json(json)
+
+      expect(json.to_json).to eq(other_chord_group.to_json)
+    end
   end
 end

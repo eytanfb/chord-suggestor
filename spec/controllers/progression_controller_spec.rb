@@ -9,16 +9,16 @@ describe 'ProgressionController', type: :controller do
 
   describe '#update' do
     let(:progression) { Progression.new([]) }
-    let(:chord) { 'C' }
-    let(:mode) { 'major' }
-    let(:params) { { progression: progression.to_json, chord:, mode: } }
+    let(:chord_group) { ChordGroup.new(Chord.new(Note.new('C'), ChordShape.new('Major'))) }
+    let(:mode) { 'Ionian' }
+    let(:params) { { progression: progression.to_json, chord_group: chord_group.to_json, mode: } }
 
     before do
       allow(Progression).to receive(:new).and_return(progression)
     end
 
     it 'adds a chord to the progression' do
-      expect(progression).to receive(:add_chord).with(chord, mode)
+      expect(progression).to receive(:add_chord_group).with(chord_group, mode)
       post :update, params:
     end
 

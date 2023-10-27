@@ -2,6 +2,6 @@
   <%= mode %>
 </div>
 
-<% chords.each_with_index do |chord, index| %>
-  <%= render partial: "home/chord", locals: { chord: chord.primary_chord, mode: } %>
+<% chords.each_with_index do |chord_group, index| %>
+  <%= render partial: "home/chord", locals: { chord: chord_group.primary_chord, mode:, chord_group: } %>
 <% end %>

@@ -221,7 +221,10 @@ describe 'Scale' do
       it 'returns an array of chord_groups' do
         scale = Scale.new(Note.new('A'), Dorian.new)
 
-        expect(scale.chord_groups.map(&:primary_chord).map(&:name)).to eq(
+        chord_grous = scale.chord_groups
+        primary_chord_names = chord_grous.map(&:primary_chord).map(&:name)
+
+        expect(primary_chord_names).to eq(
           [
             'Am',
             'Bm',
@@ -232,6 +235,56 @@ describe 'Scale' do
             'G'
           ]
         )
+      end
+    end
+
+    describe 'given a ionian scale in 7ths' do
+      it 'returns an array of chord_groups' do
+        scale = Scale.new(Note.new('C'), Ionian.new(is_seventh: true))
+
+        chord_grous = scale.chord_groups
+        primary_chord_names = chord_grous.map(&:primary_chord).map(&:name)
+        alternative_chords = chord_grous.map(&:alternative_chords)
+
+        expect(primary_chord_names).to eq(
+          [
+            'Cmaj7',
+            'Dm7',
+            'Em7',
+            'Fmaj7',
+            'G7',
+            'Am7',
+            'B°7'
+          ]
+        )
+
+        alternative_chords.each_with_index do |chords, index|
+          expect(chords).to be_a(Array)
+
+          if index == 0
+            expect(chords.map(&:name)).to eq([])
+          elsif index == 1
+            expect(chords.map(&:name)).to eq(%w[
+              A7 C#°7
+            ])
+          elsif index == 2
+            expect(chords.map(&:name)).to eq(%w[
+              B7 D#°7
+            ])
+          elsif index == 3
+            expect(chords.map(&:name)).to eq(%w[
+              C7 E°7
+            ])
+          elsif index == 4
+            expect(chords.map(&:name)).to eq([])
+          elsif index == 5
+            expect(chords.map(&:name)).to eq(%w[
+              E7 G#°7
+            ])
+          elsif index == 6
+            expect(chords.map(&:name)).to eq([])
+          end
+        end
       end
     end
   end

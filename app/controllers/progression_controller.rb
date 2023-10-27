@@ -5,12 +5,19 @@ class ProgressionController < ApplicationController
     current_progression = JSON.parse(params[:progression]) || []
     current_progression = [] if current_progression[0] == ''
 
-    progression = Progression.new(current_progression)
+    progression = Progression.from_json(current_progression)
 
-    chord = params[:chord]
     mode = params[:mode]
+    p params
+    if params[:chord_group] == 'Silence'
+      progression.add_silence
+    else
+      chord_group = ChordGroup.from_json(JSON.parse(params[:chord_group]))
+      progression.add_chord_group(chord_group, mode) unless chord_group.blank? && mode.blank?
+    end
 
-    progression.add_chord(chord, mode) unless chord.blank? && mode.blank?
+    p progression
+
     Rails.cache.write('progression', progression.to_json)
 
     render partial: 'shared/progression', locals: { progression: }

@@ -26,7 +26,6 @@ export default class extends Controller {
               setTimeout(() => {
                 playButton.classList.remove('hidden');
                 stopButton.classList.add('hidden');
-                console.log('stopping in isLoop')
                 document.getElementById('progression-container').dataset.playing = false;
               }, 60000 / bpm);
             }

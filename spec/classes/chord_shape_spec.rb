@@ -61,4 +61,12 @@ describe ChordShape do
       expect(chord_shape.intervals).to eq [0, 3, 7]
     end
   end
+
+  describe '.from_json' do
+    it 'creates a chord shape from a json string' do
+      json = { 'quality' => 'Minor' }
+      chord_shape = ChordShape.from_json(json)
+      expect(chord_shape.quality).to eq 'Minor'
+    end
+  end
 end
