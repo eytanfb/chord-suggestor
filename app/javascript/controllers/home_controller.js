@@ -96,7 +96,6 @@ export default class extends Controller {
     }
 
     this.displayRemoveChordElement(event)
-    this.displayAlternativeChords(event)
   }
 
   handleProgressionChordClick({ currentTarget: { dataset: { chord } }}) {

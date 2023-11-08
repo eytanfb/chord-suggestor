@@ -26,5 +26,10 @@ describe 'ProgressionController', type: :controller do
       post(:update, params:)
       expect(response).to render_template(partial: 'shared/_progression')
     end
+
+    it 'removes a chord from the progression' do
+      expect(progression).to receive(:remove_chord_group).with(chord_group, mode)
+      post :update, params:
+    end
   end
 end

@@ -8,15 +8,14 @@ class ProgressionController < ApplicationController
     progression = Progression.from_json(current_progression)
 
     mode = params[:mode]
-    p params
     if params[:chord_group] == 'Silence'
       progression.add_silence
     else
-      chord_group = ChordGroup.from_json(JSON.parse(params[:chord_group]))
-      progression.add_chord_group(chord_group, mode) unless chord_group.blank? && mode.blank?
+      unless params[:chord_group].blank? && mode.blank?
+        chord_group = ChordGroup.from_json(JSON.parse(params[:chord_group]))
+        progression.add_chord_group(chord_group, mode) unless chord_group.blank? && mode.blank?
+      end
     end
-
-    p progression
 
     Rails.cache.write('progression', progression.to_json)
 
