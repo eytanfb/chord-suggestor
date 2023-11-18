@@ -13,12 +13,6 @@
           <% else %>
             <span><%= chord %></span>
           <% end %>
-          <% if alternative_chords.any? %>
-            <% alternative_chords.each_with_index do |alternative_chords, index| %>
-              <% chord = alternative_chords.name %>
-              <span class="hidden alternative-chord flex absolute left-0 items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer border-modes-<%= mode %>" style="top:<%= (index + 1) * 4 %>rem" data-chord="<%= chord %>" data-mode="<%= mode %>"><%= chord %></span>
-            <% end %>
-          <% end %>
         </div>
       <% end %>
     </div>
