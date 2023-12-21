@@ -214,12 +214,13 @@ export default class extends Controller {
     const progressionElement = document.getElementById('progression-container')
     progressionElement.innerHTML = ''
 
-    progression.forEach((chord) => {
-      if (chord.chord.toLowerCase() !== 'silence') {
-        const chordElement = document.querySelector(`[data-chord="${chord.chord}"][data-mode="${chord.mode}"]`)
-        chordElement.classList.remove(`mode-shadow-${chord.mode}`)
+
+    progression.forEach(({ chord_group: { primary_chord: { name } }, mode }) => {
+      if (name.toLowerCase() !== 'silence') {
+        const chordElement = document.querySelector(`[data-chord="${name}"][data-mode="${mode}"]`)
+        chordElement.classList.remove(`mode-shadow-${mode}`)
         chordElement.querySelector('div').classList.add('text-white')
-        chordElement.querySelector('div').classList.remove(`text-modes-${chord.mode}`)
+        chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
       }
     })
 
