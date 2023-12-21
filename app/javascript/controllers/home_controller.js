@@ -251,4 +251,20 @@ export default class extends Controller {
     const url = '/home?is_seventh=' + isChecking
     fetch(url, { method: 'POST' })
   }
+
+  updateScaleOrder(event) {
+    const target = event.currentTarget
+    const scaleOrder = target.value
+
+    const split = window.location.href.split('?')
+    const base = split[0]
+    const key = split[1].split('&')[0]
+
+    const redirectUrl = base + `?${key}&order_by=${scaleOrder}`
+    console.log(window.location.href)
+    console.log(window.location.href.split('?'))
+    console.log(base, key)
+    console.log(redirectUrl)
+    window.location.href = redirectUrl
+  }
 }

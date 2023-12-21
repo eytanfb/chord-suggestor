@@ -27,6 +27,7 @@ export default class extends Controller {
                 playButton.classList.remove('hidden');
                 stopButton.classList.add('hidden');
                 document.getElementById('progression-container').dataset.playing = false;
+                document.getElementById('bpm').disabled = false;
               }, 60000 / bpm);
             }
           }, 60000 / bpm * index);

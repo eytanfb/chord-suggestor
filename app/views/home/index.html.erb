@@ -5,6 +5,11 @@
     <label for="show-7ths" class="ml-2">Show 7ths</label>
     <input id="mute-preview" type="checkbox" class="ml-4 text-gray-400 bg-transparent border border-gray-100" />
     <label for="mute-preview" class="ml-2">Mute preview table</label>
+    <label for="scale-order" class="ml-4">Scale order</label>
+    <select id="scale-order" type="select" class="ml-2 text-gray-400 bg-transparent border border-gray-100" data-controller="home" data-action="change->home#updateScaleOrder">
+      <option value="degree" <%= "selected" if @order_by == "degree" %>>Degree</option>
+      <option value="mode" <%= "selected" if @order_by == "mode" %>>Mode</option>
+    </select>
   </div>
 
   <div id="synth-view" class="w-full mt-8 grid grid-rows-1 grid-cols-12 gap-y-2">
