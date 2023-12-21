@@ -227,6 +227,7 @@ export default class extends Controller {
     this.progression([])
 
     document.getElementById('progression-container').dataset.playing = false;
+    document.getElementById('bpm').disabled = false;
   }
 
   removeFromProgression(progressionChildren, targetParent) {
