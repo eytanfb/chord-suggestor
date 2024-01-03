@@ -4,47 +4,33 @@ import _ from "lodash"
 
 export default class extends Controller {
   connect() {
-    this.debouncedPlayChordSamples = _.debounce(this.playChordSamples, 500)
+    this.debouncedPlayChordSamples = _.debounce(this.playChordSamples, 1000)
   }
 
   displayChordNotes({ currentTarget: { dataset: { chordNotes, mode }} }) {
-    const chordNotesElement = document.getElementById('chord-notes')
+    const chordNotesElement = this.chordNotesElement()
     chordNotesElement.innerHTML = chordNotes
 
-    const chordNotesElementParent = chordNotesElement.parentElement
-    this.removeClass(chordNotesElementParent, 'mode-shadow-')
-
-    chordNotesElementParent.classList.add(`mode-shadow-${mode}`)
-
     this.highlightChordNotes(chordNotes, mode)
+    console.log('displayChordNotes')
+    this.playChords(chordNotes)
+  }
 
-    const isPlaying = document.getElementById('progression-container').dataset.playing
-    const isHovering = document.getElementById('progression-container').dataset.hovering
-    const isNotMuted = !document.getElementById('mute-preview').checked
-
-    if (isHovering === 'false' || isPlaying === 'true') {
-      if (isNotMuted) {
-        if (isPlaying === 'true') {
-          this.playChordSamples(chordNotes)
-        } else {
-          this.debouncedPlayChordSamples(chordNotes)
-        }
-      }
-    } else {
-      document.getElementById('progression-container').dataset.hovering = false;
-    }
+  cancelChordPlay() {
+    this.debouncedPlayChordSamples.cancel()
   }
 
   highlightChordNotes(chordNotes, mode) {
     const notes = chordNotes.split(' - ')
     const keys = document.querySelectorAll('.key')
 
-    keys.forEach((key) => {
-      this.removeClass(key, 'highlighted-note-')
+    const chordNotesElementParent = this.chordNotesElement().parentElement
+    this.removeClass(chordNotesElementParent, 'mode-shadow-')
 
-      if (notes.includes(key.dataset.note)) {
-        key.classList.add(`highlighted-note-${mode}`)
-      }
+    chordNotesElementParent.classList.add(`mode-shadow-${mode}`)
+
+    keys.forEach((key) => {
+      this.highlightKey(notes, key, mode)
     });
   }
 
@@ -78,18 +64,13 @@ export default class extends Controller {
     fetch(url, { method: 'POST' })
       .then(response => response.text())
       .then(html => {
-        this.progressionElementDiv().innerHTML = html
+        this.progressionContainer().innerHTML = html
       })
-  }
-
-  progressionElementDiv() {
-    const progressionElement = document.getElementById('progression-container')
-    return progressionElement;
   }
 
   handleProgressionChordHover(event) {
     const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
-    document.getElementById('progression-container').dataset.hovering = true;
+    this.progressionContainer().dataset.hovering = true;
 
     if (!isSilence) {
       this.displayChordOnTable(event)
@@ -98,18 +79,18 @@ export default class extends Controller {
     this.displayRemoveChordElement(event)
   }
 
-  handleProgressionChordClick({ currentTarget: { dataset: { chord } }}) {
-    const isSilence = chord.toLowerCase() === 'silence'
+  handleProgressionChordClick(event) {
+    const isSilence = event.currentTarget.dataset.chord.toLowerCase() === 'silence'
 
     if (!isSilence) {
-      document.getElementById('progression-container').dataset.playing = true;
+      this.progressionContainer().dataset.playing = true;
       this.displayChordOnTable(event)
-      document.getElementById('progression-container').dataset.playing = false;
+      this.progressionContainer().dataset.playing = false;
     }
   }
 
   displayChordOnTable({ currentTarget: { dataset: { chord, mode }} }) {
-    const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
+    const chordElement = this.chordElement(chord, mode)
 
     chordElement.classList.add('animate-pulse-quick')
     chordElement.dispatchEvent(new Event('mouseover'))
@@ -160,7 +141,7 @@ export default class extends Controller {
       const chordInProgression = progression.some((chordInArray) => chordInArray.chord === chord && chordInArray.mode === mode)
 
       if (!chordInProgression) {
-        const chordElement = document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
+        const chordElement = this.chordElement(chord, mode)
         chordElement.classList.remove(`mode-shadow-${mode}`)
         chordElement.querySelector('div').classList.add('text-white')
         chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
@@ -171,7 +152,7 @@ export default class extends Controller {
   }
 
   progression(progression) {
-    const element = document.getElementById('progression')
+    const element = this.progressionElement()
 
     if (!element) {
       return []
@@ -182,6 +163,24 @@ export default class extends Controller {
       return;
     }
     return JSON.parse(element.dataset.progression)
+  }
+
+  playChords(chordNotes) {
+    const isProgressionPlaying = this.progressionContainer().dataset.playing
+    const isHovering = this.progressionContainer().dataset.hovering
+    const isMuted = this.mutePreviewElement().checked
+
+    if (isHovering === 'false' || isProgressionPlaying === 'true') {
+      if (!isMuted) {
+        if (isProgressionPlaying === 'true') {
+          this.playChordSamples(chordNotes)
+        } else {
+          this.debouncedPlayChordSamples(chordNotes)
+        }
+      }
+    } else {
+      this.progressionContainer().dataset.hovering = false;
+    }
   }
 
   playChordSamples(chordNotes) {
@@ -211,13 +210,13 @@ export default class extends Controller {
 
   clearProgression() {
     const progression = this.progression()
-    const progressionElement = document.getElementById('progression-container')
+    const progressionElement = this.progressionContainer()
     progressionElement.innerHTML = ''
 
 
     progression.forEach(({ chord_group: { primary_chord: { name } }, mode }) => {
       if (name.toLowerCase() !== 'silence') {
-        const chordElement = document.querySelector(`[data-chord="${name}"][data-mode="${mode}"]`)
+        const chordElement = this.chordElement(name, mode)
         chordElement.classList.remove(`mode-shadow-${mode}`)
         chordElement.querySelector('div').classList.add('text-white')
         chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
@@ -225,9 +224,8 @@ export default class extends Controller {
     })
 
     this.progression([])
-
-    document.getElementById('progression-container').dataset.playing = false;
-    document.getElementById('bpm').disabled = false;
+    this.progressionContainer().dataset.playing = false;
+    this.bpmElement().disabled = false;
   }
 
   removeFromProgression(progressionChildren, targetParent) {
@@ -261,10 +259,39 @@ export default class extends Controller {
     const key = split[1].split('&')[0]
 
     const redirectUrl = base + `?${key}&order_by=${scaleOrder}`
-    console.log(window.location.href)
-    console.log(window.location.href.split('?'))
-    console.log(base, key)
-    console.log(redirectUrl)
     window.location.href = redirectUrl
   }
+
+  progressionContainer() {
+    return document.getElementById('progression-container')
+  }
+
+  progressionElement() {
+    return document.getElementById('progression')
+  }
+
+  chordElement(chord, mode) {
+    return document.querySelector(`[data-chord="${chord}"][data-mode="${mode}"]`)
+  }
+
+  chordNotesElement() {
+    return document.getElementById('chord-notes')
+  }
+
+  bpmElement() {
+    return document.getElementById('bpm')
+  }
+
+  mutePreviewElement() {
+    return document.getElementById('mute-preview')
+  }
+
+  highlightKey(notes, key, mode) {
+    this.removeClass(key, 'highlighted-note-')
+
+    if (notes.includes(key.dataset.note)) {
+      key.classList.add(`highlighted-note-${mode}`)
+    }
+  }
 }
+

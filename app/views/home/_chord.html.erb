@@ -1,3 +1,10 @@
-<div class="group chord-box hover:mode-shadow-<%= mode.downcase %>" data-action="mouseover->home#displayChordNotes click->home#selectChord" data-chord-notes="<%= chord.display_joined_notes %>" data-mode="<%= mode.downcase %>" data-chord="<%= chord.name %>" data-chord-group="<%= chord_group.to_json %>">
-  <div class="w-2/3 group-hover:text-modes-<%= mode.downcase %> text-white text-center group-hover:font-bold" ><%= chord.name %></div>
+<div
+    class="group chord-box hover:mode-shadow-<%= mode.downcase %>"
+    data-action="mouseover->home#displayChordNotes mouseleave->home#cancelChordPlay click->home#selectChord"
+    data-chord-notes="<%= chord.display_joined_notes %>"
+    data-mode="<%= mode.downcase %>"
+    data-chord="<%= chord.name %>"
+    data-chord-group="<%= chord_group.to_json %>"
+    >
+    <div class="w-2/3 group-hover:text-modes-<%= mode.downcase %> text-white text-center group-hover:font-bold" ><%= chord.name %></div>
 </div>

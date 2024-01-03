@@ -1,5 +1,5 @@
 <div class="hidden text-green"></div>
-<div class="flex flex-col" data-controller="home">
+<div class="flex flex-col w-full" data-controller="home">
   <div id="optional-features" class="h-16 bg-gray-800 shadow-lg">
     <input id="show-7ths" type="checkbox" <%= "checked" if @is_seventh %> class="ml-4 text-gray-400 bg-transparent border border-gray-100" data-controller="home" data-action="change->home#toggle7ths" />
     <label for="show-7ths" class="ml-2">Show 7ths</label>
@@ -12,19 +12,21 @@
     </select>
   </div>
 
-  <div id="synth-view" class="w-full mt-8 grid grid-rows-1 grid-cols-12 gap-y-2">
-    <% @keys.each do |key| %>
-      <%= render partial: "home/syntakt_key", locals: { root: @key, key: key } %>
-    <% end %>
-  </div>
-  <div id="piano-view" class="hidden w-full grid-rows-1 grid-cols-12 gap-y-2">
-    <% @keys.each do |key| %>
-      <%= render partial: "home/piano_key", locals: { root: @key, key: key } %>
-    <% end %>
-  </div>
+  <div class="flex mt-10">
+    <div id="synth-view" class="w-2/3 grid grid-rows-1 grid-cols-12 gap-y-2">
+      <% @keys.each do |key| %>
+        <%= render partial: "home/syntakt_key", locals: { root: @key, key: key } %>
+      <% end %>
+    </div>
+    <div id="piano-view" class="hidden w-full grid-rows-1 grid-cols-12 gap-y-2">
+      <% @keys.each do |key| %>
+        <%= render partial: "home/piano_key", locals: { root: @key, key: key } %>
+      <% end %>
+    </div>
 
-  <div class="flex items-center h-32 p-2 mt-10 font-sans text-center border border-gray-200">
-    <div id="chord-notes" class="flex mx-auto text-3xl text-white"></div>
+    <div class="flex items-center w-1/3 h-32 p-2 ml-4 font-sans text-center border-gray-200">
+      <div id="chord-notes" class="flex mx-auto text-3xl text-white"></div>
+    </div>
   </div>
 
   <% if @key %>

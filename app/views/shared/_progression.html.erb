@@ -6,13 +6,26 @@
         <% mode = chord_group_mode[:mode].downcase %>
         <% alternative_chords = chord_group_mode[:chord_group].alternative_chords %>
 
-        <div class="progression-chord relative flex flex-col first:ml-0 <%= index % 8 == 0 ? '' : 'ml-4' %> items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-modes-<%= mode %>" data-chord="<%= chord %>" data-mode="<%= mode %>" data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick" data-controller="home">
-          <span class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-700 border-modes-<%= mode %> rounded-full text-xs text-white hover:cursor-pointer active:transform active:scale-[0.90]" data-action="click->home#removeChord" data-controller="home" data-chord="<%= chord %>" data-mode="<%= mode %>">x</span>
-          <% if chord == 'Silence' %>
-            <span><i class="fas fa-volume-off"></i></span>
-          <% else %>
-            <span><%= chord %></span>
-          <% end %>
+        <div
+            class="progression-chord relative flex flex-col first:ml-0 <%= index % 8 == 0 ? '' : 'ml-4' %> items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-modes-<%= mode %>"
+            data-chord="<%= chord %>"
+            data-mode="<%= mode %>"
+            data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick"
+            data-controller="home"
+            >
+            <span
+                class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-700 border-modes-<%= mode %> rounded-full text-xs text-white hover:cursor-pointer active:transform active:scale-[0.90]"
+                data-action="click->home#removeChord"
+                data-controller="home"
+                data-chord="<%= chord %>"
+                data-mode="<%= mode %>">
+                x
+            </span>
+            <% if chord == 'Silence' %>
+              <span><i class="fas fa-volume-off"></i></span>
+            <% else %>
+              <span><%= chord %></span>
+            <% end %>
         </div>
       <% end %>
     </div>
