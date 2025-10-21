@@ -8,6 +8,15 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= javascript_importmap_tags %>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // Initialize Supabase client
+      const SUPABASE_URL = 'https://jxmcljwsvhkqixsrpvka.supabase.co'
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4bWNsandzdmhrcWl4c3JwdmthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTIzMjIsImV4cCI6MjA3NjYyODMyMn0.FEcP-pxJrZl8wgf1cCAQUwenyh6jHORu2wuOyw0b17A'
+      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    </script>
   </head>
 
   <body>

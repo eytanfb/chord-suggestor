@@ -81,13 +81,7 @@ class Note
   def self.sharp_version(note)
     return note unless note.name.include?('b')
 
-    same_interval_notes = Note::SEMITONES.select do |_key, value|
-      value == note.semitones
-    end
-
-    sharp_version = same_interval_notes.keys.find do |key|
-      key.include?('#')
-    end
+    sharp_version = SEMITONES.find { |key, value| value == note.semitones && key.include?('#') }&.first
 
     Note.new(sharp_version)
   end
@@ -95,13 +89,7 @@ class Note
   def self.flat_version(note)
     return note unless note.name.include?('#')
 
-    same_interval_notes = Note::SEMITONES.select do |_key, value|
-      value == note.semitones
-    end
-
-    flat_version = same_interval_notes.keys.find do |key|
-      key.include?('b')
-    end
+    flat_version = SEMITONES.find { |key, value| value == note.semitones && key.include?('b') }&.first
 
     Note.new(flat_version)
   end

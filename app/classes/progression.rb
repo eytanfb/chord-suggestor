@@ -16,18 +16,16 @@ class Progression
   end
 
   def ==(other)
-    return false unless @progression == other.chord_groups
-
-    true
+    @progression == other.chord_groups
   end
 
   def self.from_json(json)
     progression = Progression.new([])
 
     json.each do |chord_group_json|
-      isSilence = chord_group_json['chord_group']['primary_chord']['name'] == 'Silence'
+      is_silence = chord_group_json['chord_group']['primary_chord']['name'] == 'Silence'
 
-      if isSilence
+      if is_silence
         progression.add_silence
       else
         chord_group = ChordGroup.from_json(chord_group_json['chord_group'])

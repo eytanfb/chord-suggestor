@@ -1,0 +1,9 @@
+<turbo-frame id="chord-grid">
+  <div class="chord-grid-container border border-gray-700 rounded-lg overflow-hidden">
+    <div class="grid grid-cols-8 gap-0">
+      <% chords.each do |mode, chord_list| %>
+        <%= render partial: "home/mode_chords", locals: { mode: mode, chords: chord_list } %>
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>

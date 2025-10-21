@@ -1,58 +1,44 @@
 <div class="hidden text-green"></div>
-<div class="flex flex-col w-full" data-controller="home">
-  <div id="optional-features" class="h-16 bg-gray-800 shadow-lg">
-    <input id="show-7ths" type="checkbox" <%= "checked" if @is_seventh %> class="ml-4 text-gray-400 bg-transparent border border-gray-100" data-controller="home" data-action="change->home#toggle7ths" />
-    <label for="show-7ths" class="ml-2">Show 7ths</label>
-    <input id="mute-preview" type="checkbox" class="ml-4 text-gray-400 bg-transparent border border-gray-100" />
-    <label for="mute-preview" class="ml-2">Mute preview table</label>
-    <label for="scale-order" class="ml-4">Scale order</label>
-    <select id="scale-order" type="select" class="ml-2 text-gray-400 bg-transparent border border-gray-100" data-controller="home" data-action="change->home#updateScaleOrder">
-      <option value="degree" <%= "selected" if @order_by == "degree" %>>Degree</option>
-      <option value="mode" <%= "selected" if @order_by == "mode" %>>Mode</option>
-    </select>
-  </div>
-
-  <div class="flex mt-10">
-    <div id="synth-view" class="w-2/3 grid grid-rows-1 grid-cols-12 gap-y-2">
-      <% @keys.each do |key| %>
-        <%= render partial: "home/syntakt_key", locals: { root: @key, key: key } %>
-      <% end %>
-    </div>
-    <div id="piano-view" class="hidden w-full grid-rows-1 grid-cols-12 gap-y-2">
-      <% @keys.each do |key| %>
-        <%= render partial: "home/piano_key", locals: { root: @key, key: key } %>
-      <% end %>
-    </div>
-
-    <div class="flex items-center w-1/3 h-32 p-2 ml-4 font-sans text-center border-gray-200">
-      <div id="chord-notes" class="flex mx-auto text-3xl text-white"></div>
-    </div>
-  </div>
+<div class="flex flex-col h-screen" data-controller="home">
+  <!-- Unified Top Navigation Bar -->
+  <%= render partial: "home/top_bar" %>
 
   <% if @key %>
-    <div class="mt-16 border grid grid-cols-8">
-      <% @chords.each do |mode, chords| %>
-        <%= render partial: "home/mode_chords", locals: { mode:, chords:} %>
-      <% end %>
-    </div>
+    <!-- Main Content: Two Column Layout -->
+    <div class="flex-1 grid grid-cols-5 gap-4 p-4 overflow-hidden">
+      <!-- Left Column: Chord Grid (60%) -->
+      <div class="col-span-3">
+        <%= render partial: "home/chord_grid", locals: { chords: @chords } %>
+      </div>
 
-    <div class="flex items-center mt-4">
-      <span class="items-center text-white">BPM</span>
-      <input id="bpm" type="range" class="ml-4 text-gray-400 bg-transparent border border-gray-100" value="120" min="60" max="200" data-controller="progression" data-action="input->progression#updateBpm" />
-      <span id="bpm-label" class="items-center w-8 ml-4 text-white">120</span>
-      <span id="progression-controls-loop" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-loop="false" data-controller="progression" data-action="click->progression#updateLoop"><i class="fas fa-rotate-right"></i></span>
-      <span id="progression-controls-play" class="ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression" data-action="click->progression#playProgression"><i class="fas fa-play"></i></span>
-      <span id="progression-controls-stop" class="hidden ml-4 text-3xl text-gray-400 hover:cursor-pointer" data-controller="progression"><i class="fas fa-stop"></i></span>
-      <span id="progression-help" class="hidden ml-4 text-white">I need a chord first</span>
-      <div class="ml-auto">
-        <span class="text-white underline underline-offset-2 hover:cursor-pointer" data-controller="home" data-action="click->home#clearProgression">Clear progression</span>
-        <span class="text-white underline underline-offset-2 hover:cursor-pointer" data-controller="home" data-action="click->home#addSilenceToProgression">Add silence</span>
+      <!-- Right Column: Note Visualizer + Progression (40%) -->
+      <div class="col-span-2 flex flex-col gap-4">
+        <!-- Compact Note Visualizer -->
+        <%= render partial: "home/note_visualizer" %>
+
+        <!-- Progression Display -->
+        <div class="progression-container flex-1 border border-gray-700 rounded-lg p-4 overflow-y-auto">
+          <h3 class="text-lg font-semibold text-gray-300 mb-3">Progression</h3>
+          <turbo-frame id="progression-display">
+            <div id="progression-container" data-hovering="false" data-playing="false">
+              <% if @progression %>
+                <%= render partial: "shared/progression", locals: { progression: @progression } %>
+              <% end %>
+            </div>
+          </turbo-frame>
+        </div>
       </div>
     </div>
-    <div id="progression-container">
-      <% if @progression %>
-        <%= render partial: "shared/progression", locals: { progression: @progression } %>
-      <% end %>
+  <% else %>
+    <!-- Empty State: No Key Selected -->
+    <div class="flex-1 flex items-center justify-center">
+      <div class="text-center">
+        <div class="text-6xl text-gray-600 mb-4">
+          <i class="fas fa-music"></i>
+        </div>
+        <h2 class="text-2xl text-gray-400 mb-2">Select a Key to Start</h2>
+        <p class="text-gray-500">Choose a musical key from the dropdown above to see chord suggestions</p>
+      </div>
     </div>
   <% end %>
 </div>

@@ -19,7 +19,7 @@ class Scale
     @notes.map.with_index do |note, index|
       chord = Chord.new(note, @mode.chord_shape_at(index))
       chord_group = ChordGroup.new(chord)
-      chord_group = add_alternatives(chord_group, index)
+      add_alternatives(chord_group, index)
     end
   end
 
@@ -54,7 +54,7 @@ class Scale
   end
 
   def handle_not_successive(note)
-    if !@notes.last.successive_to?(note)
+    unless @notes.last.successive_to?(note)
       sharp_note = Note.sharp_version(note.down(1))
       sharp_note.sharpen_without_interval
     else
@@ -63,14 +63,12 @@ class Scale
   end
 
   def add_alternatives(chord_group, index)
-    if index == 0
-      chord_group
-    else
-      alternative_chords_for(index).each do |alternative_chord|
-        chord_group.add_alternative(alternative_chord)
-      end
-      chord_group
+    return chord_group if index.zero?
+
+    alternative_chords_for(index).each do |alternative_chord|
+      chord_group.add_alternative(alternative_chord)
     end
+    chord_group
   end
 
   def alternative_chords_for(index)

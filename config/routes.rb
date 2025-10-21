@@ -7,11 +7,7 @@ Rails.application.routes.draw do
   # define home controller
   root 'home#index'
 
-  resources :home, only: %i[index] do
-    collection do
-      post :update
-    end
-  end
+  post '/home/update', to: 'home#update', as: 'update_home'
 
   resources :progression, only: [] do
     collection do

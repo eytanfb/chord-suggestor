@@ -1,5 +1,5 @@
 class Aeolian < Mode
-  CHORD_SHAPES = %w[Minor Diminished Major Minor Minor Major Major].freeze
+  CHORD_SHAPES = ['Minor', 'Diminished', 'Major', 'Minor', 'Minor', 'Major', 'Major'].freeze
   SEVENTH_CHORD_SHAPES = ['Minor 7', 'Half Diminished 7', 'Major 7', 'Minor 7', 'Minor 7', 'Major 7',
                           'Dominant 7'].freeze
 

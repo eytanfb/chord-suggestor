@@ -11,10 +11,7 @@ class ChordGroup
   end
 
   def ==(other)
-    return false unless @primary_chord == other.primary_chord
-    return false unless @alternative_chords == other.alternative_chords
-
-    true
+    @primary_chord == other.primary_chord && @alternative_chords == other.alternative_chords
   end
 
   def self.from_json(json)

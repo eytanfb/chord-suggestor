@@ -1,33 +1,31 @@
-<div id="progression" class="h-32 mt-12" data-progression="<%= progression.chord_groups.to_json %>">
-  <div class="flex items-center w-full mx-auto text-2xl text-center text-white">
-    <div class="justify-center grid-cols-8 grid">
-      <% progression.chord_groups.each_with_index do |chord_group_mode, index| %>
-        <% chord = chord_group_mode[:chord_group].primary_chord.name %>
-        <% mode = chord_group_mode[:mode].downcase %>
-        <% alternative_chords = chord_group_mode[:chord_group].alternative_chords %>
+<div id="progression" class="mt-2" data-progression="<%= progression.chord_groups.to_json %>">
+  <div class="flex flex-wrap gap-3">
+    <% progression.chord_groups.each_with_index do |chord_group_mode, index| %>
+      <% chord = chord_group_mode[:chord_group].primary_chord.name %>
+      <% mode = chord_group_mode[:mode].downcase %>
+      <% alternative_chords = chord_group_mode[:chord_group].alternative_chords %>
 
-        <div
-            class="progression-chord relative flex flex-col first:ml-0 <%= index % 8 == 0 ? '' : 'ml-4' %> items-center justify-center h-16 w-16 text-2xl text-modes-<%= mode %> hover:cursor-pointer hover:border-modes-<%= mode %>"
-            data-chord="<%= chord %>"
-            data-mode="<%= mode %>"
-            data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick"
-            data-controller="home"
-            >
-            <span
-                class="remove-chord absolute hidden -top-3 -right-3 w-6 h-6 bg-gray-700 border-modes-<%= mode %> rounded-full text-xs text-white hover:cursor-pointer active:transform active:scale-[0.90]"
-                data-action="click->home#removeChord"
-                data-controller="home"
-                data-chord="<%= chord %>"
-                data-mode="<%= mode %>">
-                x
-            </span>
-            <% if chord == 'Silence' %>
-              <span><i class="fas fa-volume-off"></i></span>
-            <% else %>
-              <span><%= chord %></span>
-            <% end %>
-        </div>
-      <% end %>
-    </div>
+      <div
+          class="progression-chord relative flex items-center justify-center h-16 w-16 text-xl text-modes-<%= mode %> border-2 border-gray-700 rounded-lg hover:cursor-pointer hover:border-modes-<%= mode %> hover:shadow-lg transition-all"
+          data-chord="<%= chord %>"
+          data-mode="<%= mode %>"
+          data-action="mouseover->home#handleProgressionChordHover click->home#handleProgressionChordClick"
+          data-controller="home"
+          >
+          <span
+              class="remove-chord absolute hidden -top-2 -right-2 w-5 h-5 bg-red-600 border border-red-700 rounded-full text-xs text-white hover:cursor-pointer hover:bg-red-700 active:transform active:scale-90 flex items-center justify-center"
+              data-action="click->home#removeChord"
+              data-controller="home"
+              data-chord="<%= chord %>"
+              data-mode="<%= mode %>">
+              ×
+          </span>
+          <% if chord == 'Silence' %>
+            <span><i class="fas fa-volume-off"></i></span>
+          <% else %>
+            <span class="font-semibold"><%= chord %></span>
+          <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

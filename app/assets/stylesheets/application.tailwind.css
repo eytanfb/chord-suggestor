@@ -47,3 +47,50 @@ html, body {
 .chord-box {
   @apply p-2 font-sans text-center border border-gray-200 hover:cursor-pointer;
 }
+
+/* Top Navigation Bar */
+.top-bar {
+  @apply sticky top-0 z-50 bg-gray-900 border-b border-gray-700 shadow-lg;
+}
+
+/* Chord Grid Container */
+.chord-grid-container {
+  @apply h-[calc(100vh-100px)] overflow-y-auto;
+}
+
+/* Progression Container */
+.progression-container {
+  @apply h-[calc(100vh-280px)] overflow-y-auto;
+}
+
+/* Mini Piano Keys */
+.mini-key {
+  @apply flex items-end justify-center text-center border border-gray-400 rounded-sm hover:cursor-pointer transition-all duration-150;
+}
+
+.mini-white-key {
+  @apply h-12 w-6 bg-white text-gray-800;
+}
+
+.mini-black-key {
+  @apply h-8 w-4 bg-[#0D0E0F] text-gray-400 border-gray-600;
+}
+
+/* Note Visualizer */
+.note-visualizer {
+  @apply sticky top-20 bg-gray-900 border border-gray-700 rounded-lg p-4 shadow-lg;
+}
+
+/* Animation for quick pulse */
+@keyframes pulse-quick {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-quick {
+  animation: pulse-quick 0.8s ease-in-out;
+}

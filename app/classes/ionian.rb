@@ -1,5 +1,5 @@
 class Ionian < Mode
-  CHORD_SHAPES = %w[Major Minor Minor Major Major Minor Diminished].freeze
+  CHORD_SHAPES = ['Major', 'Minor', 'Minor', 'Major', 'Major', 'Minor', 'Diminished'].freeze
   SEVENTH_CHORD_SHAPES = ['Major 7', 'Minor 7', 'Minor 7', 'Major 7', 'Dominant 7', 'Minor 7', 'Diminished 7'].freeze
 
   def intervals

@@ -1,9 +1,6 @@
 class ChordGenerator
   def self.from_string(chord_string)
-    chord_shape = shape_from_string(chord_string)
-    note        = note_from_string(chord_string)
-
-    Chord.new(note, chord_shape)
+    Chord.new(note_from_string(chord_string), shape_from_string(chord_string))
   end
 
   def self.shape_from_string(chord_string)
@@ -17,10 +14,7 @@ class ChordGenerator
   end
 
   def self.note_from_string(chord_string)
-    result = Note::SEMITONES.keys.find do |note|
-      chord_string.include?(note)
-    end
-
-    Note.new(result)
+    note_name = Note::SEMITONES.keys.find { |note| chord_string.include?(note) }
+    Note.new(note_name)
   end
 end

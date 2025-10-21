@@ -1,0 +1,156 @@
+<div class="top-bar sticky top-0 z-50 bg-gray-900 border-b border-gray-700 shadow-lg px-6 py-3" data-controller="home">
+  <div class="flex items-center justify-between gap-6">
+    <!-- Left Section: Title + Key Selector -->
+    <div class="flex items-center gap-4">
+      <h1 class="text-xl font-bold text-white whitespace-nowrap">Chord Suggestor</h1>
+
+      <div class="flex items-center gap-2">
+        <label for="key-select" class="text-sm text-gray-300">Key:</label>
+        <select
+          id="key-select"
+          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
+          data-action="change->home#updateKey"
+        >
+          <option value="">Select Key</option>
+          <% @keys.each do |key| %>
+            <option value="<%= key.name %>" <%= 'selected' if @key == key.name %>><%= key.name %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <!-- Center Section: Display Options -->
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2">
+        <input
+          id="show-7ths"
+          type="checkbox"
+          <%= "checked" if @is_seventh %>
+          class="text-gray-400 bg-transparent border border-gray-400 rounded focus:ring-0"
+          data-action="change->home#toggle7ths"
+        />
+        <label for="show-7ths" class="text-sm text-gray-300">7ths</label>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label for="perspective-select" class="text-sm text-gray-300">Perspective:</label>
+        <select
+          id="perspective-select"
+          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
+          data-action="change->home#updatePerspective"
+        >
+          <option value="primary" <%= "selected" if @perspective == "primary" %>>Primary</option>
+          <option value="secondary_dominants" <%= "selected" if @perspective == "secondary_dominants" %>>Secondary Dominants</option>
+          <option value="diminished_approaches" <%= "selected" if @perspective == "diminished_approaches" %>>Diminished Approaches</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label for="scale-order" class="text-sm text-gray-300">Sort:</label>
+        <select
+          id="scale-order"
+          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
+          data-action="change->home#updateScaleOrder"
+        >
+          <option value="degree" <%= "selected" if @order_by == "degree" %>>Degree</option>
+          <option value="mode" <%= "selected" if @order_by == "mode" %>>Mode</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input
+          id="mute-preview"
+          type="checkbox"
+          class="text-gray-400 bg-transparent border border-gray-400 rounded focus:ring-0"
+        />
+        <label for="mute-preview" class="text-sm text-gray-300">Mute</label>
+      </div>
+    </div>
+
+    <!-- Right Section: Playback Controls -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-gray-300">BPM</span>
+        <input
+          id="bpm"
+          type="range"
+          class="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gray-500"
+          value="120"
+          min="60"
+          max="200"
+          data-controller="progression"
+          data-action="input->progression#updateBpm"
+        />
+        <span id="bpm-label" class="w-8 text-sm text-white">120</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span
+          id="progression-controls-loop"
+          class="text-lg text-gray-400 hover:text-gray-200 hover:cursor-pointer transition-colors"
+          data-loop="false"
+          data-controller="progression"
+          data-action="click->progression#updateLoop"
+          title="Loop"
+        >
+          <i class="fas fa-rotate-right"></i>
+        </span>
+
+        <span
+          id="progression-controls-play"
+          class="text-lg text-gray-400 hover:text-green-400 hover:cursor-pointer transition-colors"
+          data-controller="progression"
+          data-action="click->progression#playProgression"
+          title="Play"
+        >
+          <i class="fas fa-play"></i>
+        </span>
+
+        <span
+          id="progression-controls-stop"
+          class="hidden text-lg text-gray-400 hover:text-red-400 hover:cursor-pointer transition-colors"
+          data-controller="progression"
+          title="Stop"
+        >
+          <i class="fas fa-stop"></i>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 border-l border-gray-700 pl-4">
+        <span
+          class="text-sm text-gray-300 underline underline-offset-2 hover:text-white hover:cursor-pointer transition-colors"
+          data-action="click->home#clearProgression"
+        >
+          Clear
+        </span>
+
+        <span
+          class="text-sm text-gray-300 underline underline-offset-2 hover:text-white hover:cursor-pointer transition-colors"
+          data-action="click->home#addSilenceToProgression"
+        >
+          Add Silence
+        </span>
+
+        <span class="text-gray-600">|</span>
+
+        <span
+          class="text-sm text-green-400 underline underline-offset-2 hover:text-green-300 hover:cursor-pointer transition-colors"
+          data-action="click->home#saveProgression"
+          title="Save this progression to Supabase"
+        >
+          💾 Save
+        </span>
+
+        <span
+          class="text-sm text-blue-400 underline underline-offset-2 hover:text-blue-300 hover:cursor-pointer transition-colors"
+          data-action="click->home#loadProgressions"
+          title="Load a saved progression from Supabase"
+        >
+          📂 Load
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <span id="progression-help" class="hidden ml-4 text-sm text-yellow-400">Select a chord to start</span>
+</div>
