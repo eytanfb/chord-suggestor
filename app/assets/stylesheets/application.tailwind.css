@@ -2,86 +2,222 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/*
-
-@layer components {
-  .btn-primary {
-    @apply px-4 py-2 bg-blue-200;
-  }
-}
-
-*/
-
+/* === Base === */
 html, body {
-  @apply bg-[#0D0E0F] font-sans text-white;
+  @apply bg-faceplate-surface font-mono text-hw-text-primary;
 }
 
 .selected {
   @apply !shadow-[0_0_30px_theme('colors.syntakt-green-shadow')];
 }
 
-.key {
-  @apply flex items-center text-white text-center w-16 h-16 border border-gray-100 shadow-md rounded-md z-10 hover:cursor-pointer hover:shadow-sm active:transform active:scale-[0.97] active:shadow-[0_0_20px_theme('colors.syntakt-green-shadow')] active:shadow-syntakt-green-shadow;
-}
-
-.black-key {
-  @apply bg-[#0D0E0F] self-start;
-}
-
-.white-key {
-  @apply bg-[#282828] self-end;
-}
-
-.piano-key {
-  @apply flex items-center text-white text-center border border-gray-100 shadow-md rounded-md hover:cursor-pointer hover:shadow-sm active:transform active:scale-[0.97] active:shadow-[0_0_20px_theme('colors.syntakt-green-shadow')] active:shadow-syntakt-green-shadow;
-}
-
-.piano-white-key {
-  @apply h-full bg-white;
-}
-
-.piano-black-key {
-  @apply h-3/5 bg-[#0D0E0F];
-}
-
+/* === Chord Grid Pad === */
 .chord-box {
-  @apply p-2 font-sans text-center border border-gray-200 hover:cursor-pointer;
+  @apply relative flex flex-col items-center justify-center
+         w-16 h-16 font-mono text-sm text-hw-text-secondary text-center
+         bg-faceplate-raised rounded-md
+         border-t border-t-faceplate-edge border-b-2 border-b-[#181819]
+         border-x border-x-faceplate-edge
+         hover:cursor-pointer hover:scale-[1.02]
+         active:scale-[0.97]
+         transition-all duration-150;
 }
 
-/* Top Navigation Bar */
+/* === Top Bar === */
 .top-bar {
-  @apply sticky top-0 z-50 bg-gray-900 border-b border-gray-700 shadow-lg;
+  @apply sticky top-0 z-50 bg-faceplate-surface border-b border-faceplate-edge shadow-lg;
 }
 
-/* Chord Grid Container */
+/* === Hardware Button (generic) === */
+.hw-btn {
+  @apply px-3 py-1.5 text-xs font-mono font-medium uppercase tracking-wider
+         bg-faceplate-raised text-hw-text-secondary
+         border border-faceplate-edge rounded-md
+         hover:text-hw-text-primary hover:border-[#4A4A4E] hover:cursor-pointer
+         active:scale-[0.97]
+         transition-all duration-150;
+}
+
+.hw-btn-active {
+  @apply text-white;
+}
+
+/* === Hardware Toggle Button === */
+.hw-toggle {
+  @apply px-3 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider
+         bg-faceplate-recessed text-hw-text-secondary
+         border border-faceplate-edge rounded-md
+         hover:cursor-pointer
+         transition-all duration-150;
+}
+
+.hw-toggle-on {
+  @apply border-state-active text-state-active shadow-[0_0_8px_theme('colors.state.active')] bg-[#0a2e15];
+}
+
+.hw-toggle-muted {
+  @apply border-state-muted text-state-muted shadow-[0_0_8px_theme('colors.state.muted')] bg-[#2e0a0a];
+}
+
+/* === Pill Button Group === */
+.hw-pill-group {
+  @apply flex rounded-md overflow-hidden border border-faceplate-edge;
+}
+
+.hw-pill {
+  @apply px-3 py-1.5 text-xs font-mono font-medium uppercase tracking-wider
+         bg-faceplate-recessed text-hw-text-secondary
+         border-r border-faceplate-edge last:border-r-0
+         hover:text-hw-text-primary hover:cursor-pointer
+         transition-all duration-150;
+}
+
+.hw-pill-active-purple {
+  @apply bg-[#2a1540] text-state-param border-state-param shadow-[inset_0_0_10px_rgba(191,90,242,0.15)];
+}
+
+.hw-pill-active-cyan {
+  @apply bg-[#0a2a35] text-state-hover border-state-hover shadow-[inset_0_0_10px_rgba(100,210,255,0.15)];
+}
+
+/* === Transport Buttons === */
+.hw-transport {
+  @apply w-9 h-9 flex items-center justify-center
+         bg-faceplate-raised text-hw-text-secondary
+         border border-faceplate-edge rounded-lg
+         hover:cursor-pointer
+         active:scale-[0.95]
+         transition-all duration-150;
+}
+
+.hw-transport-play {
+  @apply hover:text-state-active hover:border-state-active hover:shadow-[0_0_8px_theme('colors.state.active')];
+}
+
+.hw-transport-play-active {
+  @apply text-state-active border-state-active shadow-[0_0_8px_theme('colors.state.active')];
+}
+
+.hw-transport-stop {
+  @apply hover:text-state-muted hover:border-state-muted hover:shadow-[0_0_8px_theme('colors.state.muted')];
+}
+
+.hw-transport-loop {
+  @apply hover:text-state-selected hover:border-state-selected;
+}
+
+.hw-transport-loop-active {
+  @apply text-state-selected border-state-selected shadow-[0_0_8px_theme('colors.state.selected')];
+}
+
+/* === Utility Buttons (clear, silence, save, load) === */
+.hw-util-btn {
+  @apply px-2.5 py-1 text-xs font-mono uppercase tracking-wider
+         text-hw-text-secondary
+         border border-faceplate-edge rounded-md
+         hover:text-hw-text-primary hover:border-[#4A4A4E] hover:cursor-pointer
+         active:scale-[0.97]
+         transition-all duration-150;
+}
+
+/* === Chord Grid Container === */
 .chord-grid-container {
-  @apply h-[calc(100vh-100px)] overflow-y-auto;
+  @apply h-[calc(100vh-90px)] overflow-y-auto bg-faceplate-recessed rounded-lg p-3;
 }
 
-/* Progression Container */
+/* === Progression Container === */
 .progression-container {
-  @apply h-[calc(100vh-280px)] overflow-y-auto;
+  @apply flex-1 overflow-y-auto bg-faceplate-recessed rounded-lg p-4 border border-faceplate-edge;
 }
 
-/* Mini Piano Keys */
+/* === Note Visualizer (OLED Display) === */
+.note-visualizer {
+  @apply sticky top-20 bg-black border-2 border-[#333] rounded-xl p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)];
+}
+
+/* === Mini Piano Keys (LED strip) === */
 .mini-key {
-  @apply flex items-end justify-center text-center border border-gray-400 rounded-sm hover:cursor-pointer transition-all duration-150;
+  @apply flex items-end justify-center text-center rounded-sm hover:cursor-pointer transition-all duration-150;
 }
 
 .mini-white-key {
-  @apply h-12 w-6 bg-white text-gray-800;
+  @apply h-10 w-5 bg-[#3A3A3E] text-hw-text-secondary border border-faceplate-edge;
 }
 
 .mini-black-key {
-  @apply h-8 w-4 bg-[#0D0E0F] text-gray-400 border-gray-600;
+  @apply h-7 w-3.5 bg-faceplate-recessed text-[#555] border border-[#222];
 }
 
-/* Note Visualizer */
-.note-visualizer {
-  @apply sticky top-20 bg-gray-900 border border-gray-700 rounded-lg p-4 shadow-lg;
+/* === Progression Step Pads === */
+.progression-chord {
+  @apply relative flex items-center justify-center
+         h-12 w-12 text-sm font-mono font-semibold
+         bg-faceplate-raised
+         border border-faceplate-edge rounded-md
+         hover:cursor-pointer hover:border-[#555]
+         transition-all duration-150;
 }
 
-/* Animation for quick pulse */
+/* === Ghost step (empty sequencer pad) === */
+.ghost-step {
+  @apply flex items-center justify-center
+         h-12 w-12 text-lg
+         bg-faceplate-recessed text-[#333]
+         border border-dashed border-[#2A2A2E] rounded-md;
+}
+
+/* === BPM Fader === */
+.bpm-fader {
+  @apply w-24 h-1.5 bg-faceplate-recessed rounded-full appearance-none cursor-pointer
+         [&::-webkit-slider-thumb]:appearance-none
+         [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-5
+         [&::-webkit-slider-thumb]:bg-faceplate-edge [&::-webkit-slider-thumb]:rounded-sm
+         [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#555]
+         [&::-webkit-slider-thumb]:hover:bg-hw-text-secondary;
+}
+
+/* === BPM LCD Display === */
+.bpm-lcd {
+  @apply px-2 py-0.5 text-xs font-mono font-bold
+         bg-black text-state-active
+         border border-[#333] rounded-sm
+         min-w-[3rem] text-center;
+}
+
+/* === Key Selector Display === */
+.key-display {
+  @apply flex items-center gap-1;
+}
+
+.key-display-value {
+  @apply px-3 py-1.5 text-sm font-mono font-bold
+         bg-black text-state-selected
+         border border-[#333] rounded-sm
+         min-w-[3rem] text-center;
+}
+
+.key-display-arrow {
+  @apply w-7 h-7 flex items-center justify-center
+         bg-faceplate-raised text-hw-text-secondary
+         border border-faceplate-edge rounded-md
+         hover:text-hw-text-primary hover:cursor-pointer
+         active:scale-[0.95]
+         transition-all duration-150;
+}
+
+/* === Mode Label (grid row header) === */
+.mode-label {
+  @apply flex items-center justify-center p-2
+         font-mono text-xs font-bold uppercase tracking-widest
+         bg-faceplate-recessed rounded-md;
+}
+
+/* === Degree Badge === */
+.degree-badge {
+  @apply absolute top-0.5 left-1 text-[9px] font-mono text-[#555] leading-none;
+}
+
+/* === Animation for quick pulse === */
 @keyframes pulse-quick {
   0%, 100% {
     opacity: 1;
@@ -93,4 +229,19 @@ html, body {
 
 .animate-pulse-quick {
   animation: pulse-quick 0.8s ease-in-out;
+}
+
+/* === Faceplate outer container === */
+.faceplate {
+  @apply bg-faceplate-surface rounded-2xl border border-faceplate-edge shadow-2xl overflow-hidden;
+}
+
+/* === Section divider line === */
+.section-divider {
+  @apply w-px h-6 bg-faceplate-edge;
+}
+
+/* === Step playing glow (fallback for JIT) === */
+.step-playing {
+  @apply shadow-[0_0_12px_theme('colors.state.active')];
 }

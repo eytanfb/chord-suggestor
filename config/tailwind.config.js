@@ -15,12 +15,31 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
       colors: {
         'syntakt-green-fg': '#17DE6A',
         'syntakt-green-shadow': '#6BEFA2',
         'syntakt-red-fg': '#E69EA4',
         'syntakt-red-shadow': '#CC1F1F',
+        'faceplate': {
+          'surface': '#1C1C1E',
+          'recessed': '#141416',
+          'raised': '#2A2A2E',
+          'edge': '#3A3A3E',
+        },
+        'hw-text': {
+          'primary': '#E5E5E7',
+          'secondary': '#8E8E93',
+        },
+        'state': {
+          'active': '#17DE6A',
+          'recording': '#E69EA4',
+          'selected': '#FF9500',
+          'muted': '#CC1F1F',
+          'param': '#BF5AF2',
+          'hover': '#64D2FF',
+        },
         'modes': {
           'lydian': '#FFEB3B',
           'ionian': '#FFC107',
@@ -92,6 +111,15 @@ module.exports = {
     {
       pattern: /text-modes-.*/,
       variants: ['hover', 'group-hover'],
+    },
+    {
+      pattern: /bg-state-.*/,
+    },
+    {
+      pattern: /text-state-.*/,
+    },
+    {
+      pattern: /border-state-.*/,
     },
     'animate-pulse-quick',
   ],

@@ -1,28 +1,30 @@
 <div class="hidden text-green"></div>
-<div class="flex flex-col h-screen" data-controller="home">
-  <!-- Unified Top Navigation Bar -->
+<div class="flex flex-col h-full" data-controller="home">
   <%= render partial: "home/top_bar" %>
 
   <% if @key %>
-    <!-- Main Content: Two Column Layout -->
-    <div class="flex-1 grid grid-cols-5 gap-4 p-4 overflow-hidden">
-      <!-- Left Column: Chord Grid (60%) -->
+    <div class="flex-1 grid grid-cols-5 gap-3 p-3 overflow-hidden">
       <div class="col-span-3">
         <%= render partial: "home/chord_grid", locals: { chords: @chords } %>
       </div>
 
-      <!-- Right Column: Note Visualizer + Progression (40%) -->
-      <div class="col-span-2 flex flex-col gap-4">
-        <!-- Compact Note Visualizer -->
+      <div class="col-span-2 flex flex-col gap-3">
         <%= render partial: "home/note_visualizer" %>
 
-        <!-- Progression Display -->
-        <div class="progression-container flex-1 border border-gray-700 rounded-lg p-4 overflow-y-auto">
-          <h3 class="text-lg font-semibold text-gray-300 mb-3">Progression</h3>
+        <div class="progression-container">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-widest text-hw-text-secondary">Sequencer</h3>
+          </div>
           <turbo-frame id="progression-display">
             <div id="progression-container" data-hovering="false" data-playing="false">
               <% if @progression %>
                 <%= render partial: "shared/progression", locals: { progression: @progression } %>
+              <% else %>
+                <div class="flex flex-wrap gap-2">
+                  <% 8.times do %>
+                    <div class="ghost-step">+</div>
+                  <% end %>
+                </div>
               <% end %>
             </div>
           </turbo-frame>
@@ -30,14 +32,13 @@
       </div>
     </div>
   <% else %>
-    <!-- Empty State: No Key Selected -->
     <div class="flex-1 flex items-center justify-center">
       <div class="text-center">
-        <div class="text-6xl text-gray-600 mb-4">
+        <div class="text-5xl text-faceplate-edge mb-4">
           <i class="fas fa-music"></i>
         </div>
-        <h2 class="text-2xl text-gray-400 mb-2">Select a Key to Start</h2>
-        <p class="text-gray-500">Choose a musical key from the dropdown above to see chord suggestions</p>
+        <h2 class="text-lg font-mono text-hw-text-secondary mb-2">Select a Key</h2>
+        <p class="text-sm text-[#555]">Choose a key from the controls above</p>
       </div>
     </div>
   <% end %>

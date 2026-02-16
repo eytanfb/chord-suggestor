@@ -1,156 +1,142 @@
-<div class="top-bar sticky top-0 z-50 bg-gray-900 border-b border-gray-700 shadow-lg px-6 py-3" data-controller="home">
-  <div class="flex items-center justify-between gap-6">
-    <!-- Left Section: Title + Key Selector -->
-    <div class="flex items-center gap-4">
-      <h1 class="text-xl font-bold text-white whitespace-nowrap">Chord Suggestor</h1>
+<div class="top-bar px-4 py-3" data-controller="home">
+  <div class="flex items-center justify-between gap-4">
 
-      <div class="flex items-center gap-2">
-        <label for="key-select" class="text-sm text-gray-300">Key:</label>
-        <select
-          id="key-select"
-          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
-          data-action="change->home#updateKey"
-        >
-          <option value="">Select Key</option>
-          <% @keys.each do |key| %>
-            <option value="<%= key.name %>" <%= 'selected' if @key == key.name %>><%= key.name %></option>
-          <% end %>
-        </select>
+    <%# === Left: Title + Key Selector === %>
+    <div class="flex items-center gap-4">
+      <h1 class="text-sm font-mono font-bold uppercase tracking-widest text-hw-text-primary">Chord Suggestor</h1>
+
+      <div class="section-divider"></div>
+
+      <div class="key-display">
+        <button
+          class="key-display-arrow"
+          data-action="click->home#prevKey"
+          title="Previous key"
+        >&lsaquo;</button>
+        <div id="key-display-value" class="key-display-value" data-keys="<%= @keys.map(&:name).to_json %>" data-current-key="<%= @key %>">
+          <%= @key || '—' %>
+        </div>
+        <button
+          class="key-display-arrow"
+          data-action="click->home#nextKey"
+          title="Next key"
+        >&rsaquo;</button>
       </div>
     </div>
 
-    <!-- Center Section: Display Options -->
-    <div class="flex items-center gap-6">
-      <div class="flex items-center gap-2">
-        <input
-          id="show-7ths"
-          type="checkbox"
-          <%= "checked" if @is_seventh %>
-          class="text-gray-400 bg-transparent border border-gray-400 rounded focus:ring-0"
-          data-action="change->home#toggle7ths"
-        />
-        <label for="show-7ths" class="text-sm text-gray-300">7ths</label>
+    <%# === Center: Controls === %>
+    <div class="flex items-center gap-4">
+      <button
+        id="show-7ths"
+        class="hw-toggle <%= 'hw-toggle-on' if @is_seventh %>"
+        data-action="click->home#toggle7ths"
+        data-active="<%= @is_seventh %>"
+      >7TH</button>
+
+      <div class="section-divider"></div>
+
+      <div class="hw-pill-group">
+        <button
+          class="hw-pill <%= 'hw-pill-active-purple' if @perspective == 'primary' %>"
+          data-action="click->home#updatePerspective"
+          data-value="primary"
+        >PRI</button>
+        <button
+          class="hw-pill <%= 'hw-pill-active-purple' if @perspective == 'secondary_dominants' %>"
+          data-action="click->home#updatePerspective"
+          data-value="secondary_dominants"
+        >V/x</button>
+        <button
+          class="hw-pill <%= 'hw-pill-active-purple' if @perspective == 'diminished_approaches' %>"
+          data-action="click->home#updatePerspective"
+          data-value="diminished_approaches"
+        >DIM</button>
       </div>
 
-      <div class="flex items-center gap-2">
-        <label for="perspective-select" class="text-sm text-gray-300">Perspective:</label>
-        <select
-          id="perspective-select"
-          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
-          data-action="change->home#updatePerspective"
-        >
-          <option value="primary" <%= "selected" if @perspective == "primary" %>>Primary</option>
-          <option value="secondary_dominants" <%= "selected" if @perspective == "secondary_dominants" %>>Secondary Dominants</option>
-          <option value="diminished_approaches" <%= "selected" if @perspective == "diminished_approaches" %>>Diminished Approaches</option>
-        </select>
+      <div class="section-divider"></div>
+
+      <div class="hw-pill-group">
+        <button
+          class="hw-pill <%= 'hw-pill-active-cyan' if @order_by == 'degree' %>"
+          data-action="click->home#updateScaleOrder"
+          data-value="degree"
+        >DEG</button>
+        <button
+          class="hw-pill <%= 'hw-pill-active-cyan' if @order_by == 'mode' %>"
+          data-action="click->home#updateScaleOrder"
+          data-value="mode"
+        >MODE</button>
       </div>
 
-      <div class="flex items-center gap-2">
-        <label for="scale-order" class="text-sm text-gray-300">Sort:</label>
-        <select
-          id="scale-order"
-          class="px-3 py-1 text-sm text-gray-300 bg-gray-800 border border-gray-600 rounded hover:border-gray-500 focus:outline-none focus:border-gray-400"
-          data-action="change->home#updateScaleOrder"
-        >
-          <option value="degree" <%= "selected" if @order_by == "degree" %>>Degree</option>
-          <option value="mode" <%= "selected" if @order_by == "mode" %>>Mode</option>
-        </select>
-      </div>
+      <div class="section-divider"></div>
 
-      <div class="flex items-center gap-2">
-        <input
-          id="mute-preview"
-          type="checkbox"
-          class="text-gray-400 bg-transparent border border-gray-400 rounded focus:ring-0"
-        />
-        <label for="mute-preview" class="text-sm text-gray-300">Mute</label>
-      </div>
+      <button
+        id="mute-preview"
+        class="hw-toggle"
+        data-action="click->home#toggleMute"
+        data-active="false"
+      >MUTE</button>
     </div>
 
-    <!-- Right Section: Playback Controls -->
+    <%# === Right: Transport + BPM + Utilities === %>
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-300">BPM</span>
+        <span class="text-[10px] font-mono uppercase tracking-wider text-hw-text-secondary">BPM</span>
         <input
           id="bpm"
           type="range"
-          class="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gray-500"
+          class="bpm-fader"
           value="120"
           min="60"
           max="200"
           data-controller="progression"
           data-action="input->progression#updateBpm"
         />
-        <span id="bpm-label" class="w-8 text-sm text-white">120</span>
+        <span id="bpm-label" class="bpm-lcd">120</span>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="section-divider"></div>
+
+      <div class="flex items-center gap-1.5">
         <span
           id="progression-controls-loop"
-          class="text-lg text-gray-400 hover:text-gray-200 hover:cursor-pointer transition-colors"
+          class="hw-transport hw-transport-loop"
           data-loop="false"
           data-controller="progression"
           data-action="click->progression#updateLoop"
           title="Loop"
         >
-          <i class="fas fa-rotate-right"></i>
+          <i class="fas fa-rotate-right text-sm"></i>
         </span>
-
         <span
           id="progression-controls-play"
-          class="text-lg text-gray-400 hover:text-green-400 hover:cursor-pointer transition-colors"
+          class="hw-transport hw-transport-play"
           data-controller="progression"
           data-action="click->progression#playProgression"
           title="Play"
         >
-          <i class="fas fa-play"></i>
+          <i class="fas fa-play text-sm"></i>
         </span>
-
         <span
           id="progression-controls-stop"
-          class="hidden text-lg text-gray-400 hover:text-red-400 hover:cursor-pointer transition-colors"
+          class="hidden hw-transport hw-transport-stop"
           data-controller="progression"
           title="Stop"
         >
-          <i class="fas fa-stop"></i>
+          <i class="fas fa-stop text-sm"></i>
         </span>
       </div>
 
-      <div class="flex items-center gap-3 border-l border-gray-700 pl-4">
-        <span
-          class="text-sm text-gray-300 underline underline-offset-2 hover:text-white hover:cursor-pointer transition-colors"
-          data-action="click->home#clearProgression"
-        >
-          Clear
-        </span>
+      <div class="section-divider"></div>
 
-        <span
-          class="text-sm text-gray-300 underline underline-offset-2 hover:text-white hover:cursor-pointer transition-colors"
-          data-action="click->home#addSilenceToProgression"
-        >
-          Add Silence
-        </span>
-
-        <span class="text-gray-600">|</span>
-
-        <span
-          class="text-sm text-green-400 underline underline-offset-2 hover:text-green-300 hover:cursor-pointer transition-colors"
-          data-action="click->home#saveProgression"
-          title="Save this progression to Supabase"
-        >
-          💾 Save
-        </span>
-
-        <span
-          class="text-sm text-blue-400 underline underline-offset-2 hover:text-blue-300 hover:cursor-pointer transition-colors"
-          data-action="click->home#loadProgressions"
-          title="Load a saved progression from Supabase"
-        >
-          📂 Load
-        </span>
+      <div class="flex items-center gap-1.5">
+        <button class="hw-util-btn" data-action="click->home#clearProgression">CLR</button>
+        <button class="hw-util-btn" data-action="click->home#addSilenceToProgression">SIL</button>
+        <button class="hw-util-btn text-state-active" data-action="click->home#saveProgression" title="Save to Supabase">SAVE</button>
+        <button class="hw-util-btn text-state-hover" data-action="click->home#loadProgressions" title="Load from Supabase">LOAD</button>
       </div>
     </div>
   </div>
 
-  <span id="progression-help" class="hidden ml-4 text-sm text-yellow-400">Select a chord to start</span>
+  <span id="progression-help" class="hidden ml-4 text-xs font-mono text-state-selected">Select a chord to start</span>
 </div>

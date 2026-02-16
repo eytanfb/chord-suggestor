@@ -83,14 +83,13 @@ export default class extends Controller {
 
   updateLoop(event) {
     const loop = event.currentTarget.dataset.loop;
-    const icon = event.currentTarget.firstElementChild;
 
     if (loop === 'true') {
       event.currentTarget.dataset.loop = false;
-      icon.classList.remove('fa-spin');
+      event.currentTarget.classList.remove('hw-transport-loop-active');
     } else {
       event.currentTarget.dataset.loop = true;
-      icon.classList.add('fa-spin');
+      event.currentTarget.classList.add('hw-transport-loop-active');
     }
   }
 
@@ -98,6 +97,7 @@ export default class extends Controller {
     chord.dispatchEvent(new Event('mouseover'));
     const mode = chord.dataset.mode;
     chord.classList.add(`border-modes-${mode}`);
+    chord.classList.add('step-playing');
 
     const mouseOutInterval = setInterval(() => {
       this.unhighlightChord(chord);
@@ -109,5 +109,6 @@ export default class extends Controller {
     chord.dispatchEvent(new Event('mouseleave'));
     const mode = chord.dataset.mode;
     chord.classList.remove(`border-modes-${mode}`);
+    chord.classList.remove('step-playing');
   }
 }

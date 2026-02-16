@@ -1,7 +1,7 @@
-<div class="p-2 font-bold text-modes-<%= mode.downcase %> border border-gray-200">
-  <%= mode %>
+<div class="mode-label text-modes-<%= mode.downcase %>">
+  <%= mode[0..2].upcase %>
 </div>
 
 <% chords.each_with_index do |chord_group, index| %>
-  <%= render partial: "home/chord", locals: { chord: chord_group.primary_chord, mode:, chord_group: } %>
+  <%= render partial: "home/chord", locals: { chord: chord_group.primary_chord, mode:, chord_group:, index: } %>
 <% end %>

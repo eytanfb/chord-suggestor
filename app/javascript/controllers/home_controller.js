@@ -16,8 +16,8 @@ export default class extends Controller {
 
     // Update the visualizer with chord name and notes separately
     chordNotesElement.innerHTML = `
-      <div class="text-4xl font-bold text-white mb-2">${chordName}</div>
-      <div class="text-lg text-gray-400">${chordNotes}</div>
+      <div class="text-3xl font-mono font-bold text-modes-${mode} mb-1">${chordName}</div>
+      <div class="text-sm font-mono text-hw-text-secondary">${chordNotes}</div>
     `
 
     this.highlightChordNotes(chordNotes, mode)
@@ -53,7 +53,7 @@ export default class extends Controller {
 
   selectChord({ currentTarget, currentTarget: { dataset: { chordGroup, mode }} }) {
     currentTarget.classList.add(`mode-shadow-${mode}`)
-    currentTarget.querySelector('div').classList.remove('text-white')
+    currentTarget.querySelector('div').classList.remove('text-hw-text-secondary')
     currentTarget.querySelector('div').classList.add(`text-modes-${mode}`)
 
     this.displayProgression(chordGroup, mode)
@@ -169,7 +169,7 @@ export default class extends Controller {
       if (!chordInProgression) {
         const chordElement = this.chordElement(chord, mode)
         chordElement.classList.remove(`mode-shadow-${mode}`)
-        chordElement.querySelector('div').classList.add('text-white')
+        chordElement.querySelector('div').classList.add('text-hw-text-secondary')
         chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
       }
     }
@@ -244,7 +244,7 @@ export default class extends Controller {
       if (name.toLowerCase() !== 'silence') {
         const chordElement = this.chordElement(name, mode)
         chordElement.classList.remove(`mode-shadow-${mode}`)
-        chordElement.querySelector('div').classList.add('text-white')
+        chordElement.querySelector('div').classList.add('text-hw-text-secondary')
         chordElement.querySelector('div').classList.remove(`text-modes-${mode}`)
       }
     })
@@ -270,21 +270,14 @@ export default class extends Controller {
 
   async toggle7ths(event) {
     const target = event.currentTarget
-    const isChecking = target.checked
+    const isCurrentlyActive = target.dataset.active === 'true'
+    const newValue = !isCurrentlyActive
 
-    // Get current key from URL
     const urlParams = new URLSearchParams(window.location.search)
     const currentKey = urlParams.get('key')
+    if (!currentKey) return
 
-    console.log('[toggle7ths] Current key:', currentKey, 'isChecking:', isChecking)
-
-    if (!currentKey) {
-      console.error('No key selected')
-      return
-    }
-
-    const url = `/home/update?key=${currentKey}&is_seventh=${isChecking}`
-    console.log('[toggle7ths] Fetching URL:', url)
+    const url = `/home/update?key=${currentKey}&is_seventh=${newValue}`
 
     try {
       const response = await fetch(url, {
@@ -295,15 +288,12 @@ export default class extends Controller {
         }
       })
 
-      console.log('[toggle7ths] Response status:', response.status)
-
       if (response.ok) {
         const html = await response.text()
-        console.log('[toggle7ths] Response length:', html.length)
-        console.log('[toggle7ths] Response HTML:', html.substring(0, 200))
-
-        // Let Turbo handle the stream response automatically
         Turbo.renderStreamMessage(html)
+
+        target.dataset.active = String(newValue)
+        target.classList.toggle('hw-toggle-on', newValue)
       }
     } catch (error) {
       console.error('[toggle7ths] Error:', error)
@@ -311,22 +301,13 @@ export default class extends Controller {
   }
 
   async updatePerspective(event) {
-    const target = event.currentTarget
-    const perspective = target.value
+    const perspective = event.currentTarget.dataset.value
 
-    // Get current key from URL
     const urlParams = new URLSearchParams(window.location.search)
     const currentKey = urlParams.get('key')
-
-    console.log('[updatePerspective] Current key:', currentKey, 'perspective:', perspective)
-
-    if (!currentKey) {
-      console.error('[updatePerspective] No key selected')
-      return
-    }
+    if (!currentKey) return
 
     const url = `/home/update?key=${currentKey}&perspective=${perspective}`
-    console.log('[updatePerspective] Fetching URL:', url)
 
     try {
       const response = await fetch(url, {
@@ -337,15 +318,14 @@ export default class extends Controller {
         }
       })
 
-      console.log('[updatePerspective] Response status:', response.status)
-
       if (response.ok) {
         const html = await response.text()
-        console.log('[updatePerspective] Response length:', html.length)
-        console.log('[updatePerspective] Response HTML:', html.substring(0, 200))
-
-        // Let Turbo handle the stream response automatically
         Turbo.renderStreamMessage(html)
+
+        document.querySelectorAll('.hw-pill-group .hw-pill[data-action*="updatePerspective"]').forEach(btn => {
+          btn.classList.remove('hw-pill-active-purple')
+        })
+        event.currentTarget.classList.add('hw-pill-active-purple')
       }
     } catch (error) {
       console.error('[updatePerspective] Error:', error)
@@ -353,22 +333,13 @@ export default class extends Controller {
   }
 
   async updateScaleOrder(event) {
-    const target = event.currentTarget
-    const orderBy = target.value
+    const orderBy = event.currentTarget.dataset.value
 
-    // Get current key from URL
     const urlParams = new URLSearchParams(window.location.search)
     const currentKey = urlParams.get('key')
-
-    console.log('[updateScaleOrder] Current key:', currentKey, 'orderBy:', orderBy)
-
-    if (!currentKey) {
-      console.error('[updateScaleOrder] No key selected')
-      return
-    }
+    if (!currentKey) return
 
     const url = `/home/update?key=${currentKey}&order_by=${orderBy}`
-    console.log('[updateScaleOrder] Fetching URL:', url)
 
     try {
       const response = await fetch(url, {
@@ -379,30 +350,49 @@ export default class extends Controller {
         }
       })
 
-      console.log('[updateScaleOrder] Response status:', response.status)
-
       if (response.ok) {
         const html = await response.text()
-        console.log('[updateScaleOrder] Response length:', html.length)
-        console.log('[updateScaleOrder] Response HTML:', html.substring(0, 200))
-
-        // Let Turbo handle the stream response automatically
         Turbo.renderStreamMessage(html)
+
+        document.querySelectorAll('.hw-pill-group .hw-pill[data-action*="updateScaleOrder"]').forEach(btn => {
+          btn.classList.remove('hw-pill-active-cyan')
+        })
+        event.currentTarget.classList.add('hw-pill-active-cyan')
       }
     } catch (error) {
       console.error('[updateScaleOrder] Error:', error)
     }
   }
 
-  updateKey(event) {
-    const target = event.currentTarget
-    const selectedKey = target.value
+  prevKey() {
+    this.cycleKey(-1)
+  }
 
-    if (selectedKey) {
-      const url = new URL(window.location.href)
-      url.searchParams.set('key', selectedKey)
-      window.location.href = url.toString()
-    }
+  nextKey() {
+    this.cycleKey(1)
+  }
+
+  cycleKey(direction) {
+    const display = document.getElementById('key-display-value')
+    const keys = JSON.parse(display.dataset.keys)
+    const currentKey = display.dataset.currentKey
+    const currentIndex = keys.indexOf(currentKey)
+
+    let newIndex = currentIndex + direction
+    if (newIndex < 0) newIndex = keys.length - 1
+    if (newIndex >= keys.length) newIndex = 0
+
+    const newKey = keys[newIndex]
+    const url = new URL(window.location.href)
+    url.searchParams.set('key', newKey)
+    window.location.href = url.toString()
+  }
+
+  toggleMute(event) {
+    const target = event.currentTarget
+    const isActive = target.dataset.active === 'true'
+    target.dataset.active = String(!isActive)
+    target.classList.toggle('hw-toggle-muted', !isActive)
   }
 
   progressionContainer() {
@@ -427,7 +417,8 @@ export default class extends Controller {
   }
 
   mutePreviewElement() {
-    return document.getElementById('mute-preview')
+    const el = document.getElementById('mute-preview')
+    return { checked: el?.dataset.active === 'true' }
   }
 
   highlightKey(notes, key, mode) {
@@ -472,7 +463,6 @@ export default class extends Controller {
 
       if (error) throw error
 
-      console.log('Progression saved:', data)
       alert(`✅ Progression "${name}" saved successfully!`)
     } catch (error) {
       console.error('Error saving progression:', error)
@@ -517,8 +507,6 @@ export default class extends Controller {
   }
 
   async loadProgression(progression) {
-    console.log('Loading progression:', progression)
-
     // Clear current progression
     this.clearProgression()
 
